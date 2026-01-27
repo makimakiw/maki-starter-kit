@@ -252,18 +252,19 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## Version
 
-**Current Version:** 1.2.0
+**Current Version:** 1.3.0
 
-**What's New in v1.2.0:**
-- ✅ **Automatic uv installation** - CLI offers to install uv when choosing SpecKit
-- ✅ **Pencil setup instructions** - Clear steps for installing Pencil in Cursor
-- ✅ **Improved UX** - Better messaging and guidance throughout
+**What's New in v1.3.0:**
+- ✅ **Fixed repository structure** - CLI now at root for easy installation
+- ✅ **Works from fresh clone** - No more package.json errors
+- ✅ **Cleaner repository** - Removed test files and unnecessary templates
 
 **Previous features:**
+- ✅ Automatic uv installation (v1.2.0)
+- ✅ Pencil setup instructions (v1.2.0)
 - ✅ Real GitHub SpecKit integration
 - ✅ Step-by-step instructions before dev server
 - ✅ Graceful error handling
-- ✅ No terminal blocking
 - ✅ Copy-paste ready commands
 
 ## License
