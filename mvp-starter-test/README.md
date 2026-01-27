@@ -46,8 +46,8 @@ The CLI will guide you through:
 2. Next.js project creation
 3. Design system setup
 4. Pencil integration
-5. Optional SpecKit installation
-6. Complete step-by-step instructions
+5. Optional SpecKit installation (with automatic `uv` installation)
+6. Complete step-by-step instructions (including Pencil setup)
 
 ## What Gets Created
 
@@ -96,7 +96,14 @@ my-project/
 
 ### Pencil Integration
 
-Create visual design system files:
+**Installation:** Pencil must be installed in Cursor's MCP settings first.
+
+In Cursor:
+1. Open Settings (⌘,)
+2. Search for "MCP"
+3. Enable Pencil MCP server
+
+Then create visual design system files:
 ```
 @CREATE-PENCIL-FILE.md please create the Pencil file
 ```
@@ -114,7 +121,14 @@ Spec-driven development workflow:
 
 ## Installing SpecKit
 
-SpecKit requires `uv` (Python package manager):
+**New in v1.2.0:** The CLI now offers to install `uv` automatically! 🎉
+
+When you choose SpecKit, if `uv` is not installed, the CLI will ask:
+```
+? Install uv now? (y/N)
+```
+
+If you choose **Yes**, it installs automatically. If you prefer manual installation:
 
 ### macOS/Linux:
 ```bash
@@ -126,7 +140,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-Then restart your terminal and run the CLI again.
+**Important:** After installing `uv`, restart your terminal and run the CLI again to complete SpecKit setup.
 
 ## Development
 
@@ -238,9 +252,14 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## Version
 
-**Current Version:** 1.1.1
+**Current Version:** 1.2.0
 
-**What's New:**
+**What's New in v1.2.0:**
+- ✅ **Automatic uv installation** - CLI offers to install uv when choosing SpecKit
+- ✅ **Pencil setup instructions** - Clear steps for installing Pencil in Cursor
+- ✅ **Improved UX** - Better messaging and guidance throughout
+
+**Previous features:**
 - ✅ Real GitHub SpecKit integration
 - ✅ Step-by-step instructions before dev server
 - ✅ Graceful error handling
