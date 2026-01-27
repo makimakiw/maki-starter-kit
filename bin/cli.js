@@ -12,12 +12,13 @@ import { setupPencil } from '../lib/setup-pencil.js';
 import { extractToPencil } from '../lib/extract-to-pencil.js';
 import { checkPrerequisites } from '../lib/check-prerequisites.js';
 import { checkUvAvailable, installUv } from '../lib/setup-speckit.js';
+import { checkPencilMCP } from '../lib/check-pencil.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Show complete step-by-step instructions
-function showCompleteInstructions(projectDir, projectInfo, usedSpecKit) {
+function showCompleteInstructions(projectDir, projectInfo, usedSpecKit, hasPencil) {
   console.log('\n' + '='.repeat(70));
   console.log(chalk.bold.green('📋 STEP-BY-STEP INSTRUCTIONS'));
   console.log('='.repeat(70));
@@ -30,6 +31,7 @@ function showCompleteInstructions(projectDir, projectInfo, usedSpecKit) {
   console.log(chalk.dim('  • Component extraction metadata'));
   if (usedSpecKit) {
     console.log(chalk.dim('  • SpecKit framework (.specify/ folder)'));
+    console.log(chalk.dim('  • Project constitution with design system rules'));
   }
   
   console.log(chalk.bold.white('\n📍 Step 1: Navigate to Your Project\n'));
@@ -38,47 +40,56 @@ function showCompleteInstructions(projectDir, projectInfo, usedSpecKit) {
   console.log(chalk.bold.white('\n📍 Step 2: Open in Cursor\n'));
   console.log(chalk.cyan('   cursor .'));
   
-  console.log(chalk.bold.white('\n📍 Step 3: Install Pencil (if not already installed)\n'));
-  console.log(chalk.white('   Pencil is required to create the visual design file.\n'));
-  console.log(chalk.yellow('   In Cursor:'));
-  console.log(chalk.white('   1. Open Settings (⌘,)'));
-  console.log(chalk.white('   2. Search for "MCP"'));
-  console.log(chalk.white('   3. Click "Add MCP Server" or enable Pencil if it\'s listed'));
-  console.log(chalk.dim('\n   If Pencil is already installed, skip this step\n'));
-  
-  console.log(chalk.bold.white('\n📍 Step 4: Create Pencil Design File\n'));
-  console.log(chalk.white('   In Cursor Chat, paste this EXACT command:'));
-  console.log(chalk.bgBlue.white('\n   @CREATE-PENCIL-FILE.md please create the Pencil file   \n'));
-  console.log(chalk.dim('   This will create a visual design system file with all components'));
+  if (hasPencil) {
+    console.log(chalk.bold.white('\n📍 Step 3: Pencil MCP Status\n'));
+    console.log(chalk.green('   ✅ Pencil MCP detected and active!\n'));
+    
+    console.log(chalk.bold.white('\n📍 Step 4: Create Pencil Design File\n'));
+    console.log(chalk.white('   In Cursor Chat, paste this command:'));
+    console.log(chalk.bgBlue.white('\n   @CREATE-PENCIL-FILE.md create the Pencil design file   \n'));
+    console.log(chalk.dim('   This creates a visual design system with styled components'));
+  } else {
+    console.log(chalk.bold.white('\n📍 Step 3: Install Pencil MCP\n'));
+    console.log(chalk.yellow('   ⚠️  Pencil MCP not detected\n'));
+    console.log(chalk.white('   Pencil is required to create the visual design file.\n'));
+    console.log(chalk.white('   Install Pencil in Cursor:'));
+    console.log(chalk.cyan('   1. Open Cursor Settings (⌘,)'));
+    console.log(chalk.cyan('   2. Search for "MCP"'));
+    console.log(chalk.cyan('   3. Click "Add MCP Server" and enable Pencil'));
+    console.log(chalk.dim('\n   After installing, restart Cursor\n'));
+    
+    console.log(chalk.bold.white('\n📍 Step 4: Create Pencil Design File\n'));
+    console.log(chalk.white('   After Pencil is installed, in Cursor Chat paste:'));
+    console.log(chalk.bgBlue.white('\n   @CREATE-PENCIL-FILE.md create the Pencil design file   \n'));
+    console.log(chalk.dim('   This creates a visual design system with styled components'));
+  }
   
   if (usedSpecKit) {
-    console.log(chalk.bold.white('\n📍 Step 5: Start SpecKit Workflow (Optional but Recommended)\n'));
-    console.log(chalk.white('   SpecKit helps you build with a structured spec → plan → implement flow.\n'));
+    console.log(chalk.bold.white('\n📍 Step 5: Use SpecKit Workflow\n'));
+    console.log(chalk.white('   SpecKit is configured with your design system context!\n'));
+    console.log(chalk.green('   ✓ Constitution already created with design system rules'));
+    console.log(chalk.dim('   ✓ Knows about your components and color tokens\n'));
     
-    console.log(chalk.yellow('   Step 5a: Create Project Constitution'));
-    console.log(chalk.white('   In Cursor Chat, paste:'));
-    console.log(chalk.bgBlue.white('\n   /speckit.constitution Create principles focused on design system usage, clean code, and user experience   \n'));
-    console.log(chalk.dim('   This creates your project\'s governing principles\n'));
+    console.log(chalk.white('   Run these commands in your terminal:\n'));
     
-    console.log(chalk.yellow('   Step 5b: Define What to Build'));
-    console.log(chalk.white('   In Cursor Chat, paste:'));
-    console.log(chalk.bgBlue.white('\n   /speckit.specify Build [describe your MVP here, e.g., "a user dashboard with profile editing"]   \n'));
-    console.log(chalk.dim('   Be specific about what you want to build\n'));
+    console.log(chalk.yellow('   Step 5a: Define What to Build'));
+    console.log(chalk.cyan('   specify specify "Build a user dashboard with profile editing"\n'));
+    console.log(chalk.dim('   Replace the description with what you want to build\n'));
     
-    console.log(chalk.yellow('   Step 5c: Create Technical Plan'));
-    console.log(chalk.white('   In Cursor Chat, paste:'));
-    console.log(chalk.bgBlue.white('\n   /speckit.plan Use the existing design system components, Next.js, and Tailwind CSS   \n'));
-    console.log(chalk.dim('   This creates a detailed implementation plan\n'));
+    console.log(chalk.yellow('   Step 5b: Create Technical Plan'));
+    console.log(chalk.cyan('   specify plan\n'));
+    console.log(chalk.dim('   Creates a detailed implementation plan\n'));
     
-    console.log(chalk.yellow('   Step 5d: Generate Tasks'));
-    console.log(chalk.white('   In Cursor Chat, paste:'));
-    console.log(chalk.bgBlue.white('\n   /speckit.tasks   \n'));
-    console.log(chalk.dim('   This breaks down the plan into actionable tasks\n'));
+    console.log(chalk.yellow('   Step 5c: Generate Tasks'));
+    console.log(chalk.cyan('   specify tasks\n'));
+    console.log(chalk.dim('   Breaks down the plan into actionable tasks\n'));
     
-    console.log(chalk.yellow('   Step 5e: Implement'));
-    console.log(chalk.white('   In Cursor Chat, paste:'));
-    console.log(chalk.bgBlue.white('\n   /speckit.implement   \n'));
-    console.log(chalk.dim('   This executes all tasks and builds your feature\n'));
+    console.log(chalk.yellow('   Step 5d: Implement'));
+    console.log(chalk.cyan('   specify implement\n'));
+    console.log(chalk.dim('   Executes all tasks and builds your feature\n'));
+    
+    console.log(chalk.dim('   💡 View constitution: .specify/memory/constitution.md'));
+    console.log(chalk.dim('   💡 Specs are saved in: specs/ folder\n'));
   } else {
     console.log(chalk.bold.white('\n📍 Step 5: Start Building Your MVP\n'));
     console.log(chalk.white('   Use Cursor Chat to ask for features:'));
@@ -96,8 +107,9 @@ function showCompleteInstructions(projectDir, projectInfo, usedSpecKit) {
   console.log(chalk.dim('   • Components are in design-system/pencildraw/'));
   console.log(chalk.dim('   • Use @filename.md to reference files in Cursor'));
   if (usedSpecKit) {
-    console.log(chalk.dim('   • SpecKit files are in .specify/ folder'));
-    console.log(chalk.dim('   • Each SpecKit command creates new files in specs/'));
+    console.log(chalk.dim('   • SpecKit runs in terminal: specify <command>'));
+    console.log(chalk.dim('   • Constitution is in .specify/memory/constitution.md'));
+    console.log(chalk.dim('   • Specs are saved in specs/ folder'));
   }
   
   console.log('\n' + '='.repeat(70) + '\n');
@@ -223,8 +235,11 @@ async function main() {
     // Success message
     console.log('\n' + chalk.green.bold('🎉 Setup Complete! All files created.\n'));
 
+    // Check if Pencil MCP is installed
+    const hasPencil = await checkPencilMCP();
+
     // Show complete step-by-step instructions BEFORE offering dev server
-    await showCompleteInstructions(projectDir, projectInfo, usedSpecKit);
+    await showCompleteInstructions(projectDir, projectInfo, usedSpecKit, hasPencil);
 
     // Ask if they want to start the dev server now
     console.log('\n' + chalk.bold.cyan('Final Step: Development Server\n'));

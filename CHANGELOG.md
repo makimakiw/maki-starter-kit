@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-01-28
+
+### Added
+- **Automatic constitution creation** - SpecKit constitution auto-generated with project context
+  - Includes project name, primary color, component list, and file paths
+  - Sets design system rules and code standards automatically
+- **Pencil MCP detection** - CLI detects if Pencil is installed and adjusts instructions
+  - Shows ✅ if Pencil is detected
+  - Shows ⚠️ with installation steps if not detected
+- **Better Pencil file generation** - Complete visual overhaul
+  - Components now use real design system colors and styling
+  - Added shadows, proper spacing, and professional appearance
+  - Clean horizontal layout with info + visual examples
+  - Realistic component examples (buttons, inputs, modals, etc.)
+
+### Changed
+- **SpecKit workflow updated to terminal commands**
+  - Changed from chat slash commands to actual terminal commands
+  - Instructions now show: `specify specify`, `specify plan`, etc.
+  - Constitution is pre-created, users can start building immediately
+- **Simplified Pencil component structure**
+  - Removed complex nested frames
+  - Clean 2-level structure with better maintainability
+- **Improved step-by-step instructions**
+  - Clearer messaging about what's created
+  - Better Pro Tips with actual file locations
+
+### Fixed
+- Pencil components no longer look like cramped wireframes
+- SpecKit commands now match actual CLI behavior
+- Constitution references correct design system files
+
 ## [1.3.0] - 2026-01-28
 
 ### Fixed
