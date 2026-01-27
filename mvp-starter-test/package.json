@@ -1,6 +1,6 @@
 {
   "name": "mvp-starter-cli",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Complete Next.js MVP starter with design system, component library, and optional SpecKit integration",
   "keywords": [
     "next.js",

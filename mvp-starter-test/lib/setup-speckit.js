@@ -14,6 +14,41 @@ export async function checkUvAvailable() {
   }
 }
 
+// Install uv automatically
+export async function installUv() {
+  const spinner = ora('Installing uv...').start();
+  
+  try {
+    const platform = process.platform;
+    
+    if (platform === 'win32') {
+      // Windows
+      await execa('powershell', [
+        '-c',
+        'irm https://astral.sh/uv/install.ps1 | iex'
+      ], { stdio: 'inherit' });
+    } else {
+      // macOS/Linux
+      await execa('sh', [
+        '-c',
+        'curl -LsSf https://astral.sh/uv/install.sh | sh'
+      ], { stdio: 'inherit' });
+    }
+    
+    spinner.succeed(chalk.green('uv installed successfully'));
+    console.log(chalk.yellow('\n⚠️  Important: You need to restart your terminal for uv to be available.'));
+    console.log(chalk.white('After restarting, run the CLI again to complete SpecKit setup.\n'));
+    return true;
+  } catch (error) {
+    spinner.fail(chalk.red('Failed to install uv'));
+    console.log(chalk.yellow('\nManual installation:'));
+    console.log(chalk.cyan('  macOS/Linux: ') + chalk.white('curl -LsSf https://astral.sh/uv/install.sh | sh'));
+    console.log(chalk.cyan('  Windows:     ') + chalk.white('powershell -c "irm https://astral.sh/uv/install.ps1 | iex"'));
+    console.log(chalk.dim('\nMore info: https://docs.astral.sh/uv/\n'));
+    return false;
+  }
+}
+
 export async function setupSpecKit(projectDir, projectInfo) {
   const spinner = ora('Checking for SpecKit prerequisites...').start();
 

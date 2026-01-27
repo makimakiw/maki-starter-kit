@@ -11,7 +11,7 @@ import { setupSpecKit } from '../lib/setup-speckit.js';
 import { setupPencil } from '../lib/setup-pencil.js';
 import { extractToPencil } from '../lib/extract-to-pencil.js';
 import { checkPrerequisites } from '../lib/check-prerequisites.js';
-import { checkUvAvailable } from '../lib/setup-speckit.js';
+import { checkUvAvailable, installUv } from '../lib/setup-speckit.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -38,41 +38,49 @@ function showCompleteInstructions(projectDir, projectInfo, usedSpecKit) {
   console.log(chalk.bold.white('\n📍 Step 2: Open in Cursor\n'));
   console.log(chalk.cyan('   cursor .'));
   
-  console.log(chalk.bold.white('\n📍 Step 3: Create Pencil Design File\n'));
+  console.log(chalk.bold.white('\n📍 Step 3: Install Pencil (if not already installed)\n'));
+  console.log(chalk.white('   Pencil is required to create the visual design file.\n'));
+  console.log(chalk.yellow('   In Cursor:'));
+  console.log(chalk.white('   1. Open Settings (⌘,)'));
+  console.log(chalk.white('   2. Search for "MCP"'));
+  console.log(chalk.white('   3. Click "Add MCP Server" or enable Pencil if it\'s listed'));
+  console.log(chalk.dim('\n   If Pencil is already installed, skip this step\n'));
+  
+  console.log(chalk.bold.white('\n📍 Step 4: Create Pencil Design File\n'));
   console.log(chalk.white('   In Cursor Chat, paste this EXACT command:'));
   console.log(chalk.bgBlue.white('\n   @CREATE-PENCIL-FILE.md please create the Pencil file   \n'));
   console.log(chalk.dim('   This will create a visual design system file with all components'));
   
   if (usedSpecKit) {
-    console.log(chalk.bold.white('\n📍 Step 4: Start SpecKit Workflow (Optional but Recommended)\n'));
+    console.log(chalk.bold.white('\n📍 Step 5: Start SpecKit Workflow (Optional but Recommended)\n'));
     console.log(chalk.white('   SpecKit helps you build with a structured spec → plan → implement flow.\n'));
     
-    console.log(chalk.yellow('   Step 4a: Create Project Constitution'));
+    console.log(chalk.yellow('   Step 5a: Create Project Constitution'));
     console.log(chalk.white('   In Cursor Chat, paste:'));
     console.log(chalk.bgBlue.white('\n   /speckit.constitution Create principles focused on design system usage, clean code, and user experience   \n'));
     console.log(chalk.dim('   This creates your project\'s governing principles\n'));
     
-    console.log(chalk.yellow('   Step 4b: Define What to Build'));
+    console.log(chalk.yellow('   Step 5b: Define What to Build'));
     console.log(chalk.white('   In Cursor Chat, paste:'));
     console.log(chalk.bgBlue.white('\n   /speckit.specify Build [describe your MVP here, e.g., "a user dashboard with profile editing"]   \n'));
     console.log(chalk.dim('   Be specific about what you want to build\n'));
     
-    console.log(chalk.yellow('   Step 4c: Create Technical Plan'));
+    console.log(chalk.yellow('   Step 5c: Create Technical Plan'));
     console.log(chalk.white('   In Cursor Chat, paste:'));
     console.log(chalk.bgBlue.white('\n   /speckit.plan Use the existing design system components, Next.js, and Tailwind CSS   \n'));
     console.log(chalk.dim('   This creates a detailed implementation plan\n'));
     
-    console.log(chalk.yellow('   Step 4d: Generate Tasks'));
+    console.log(chalk.yellow('   Step 5d: Generate Tasks'));
     console.log(chalk.white('   In Cursor Chat, paste:'));
     console.log(chalk.bgBlue.white('\n   /speckit.tasks   \n'));
     console.log(chalk.dim('   This breaks down the plan into actionable tasks\n'));
     
-    console.log(chalk.yellow('   Step 4e: Implement'));
+    console.log(chalk.yellow('   Step 5e: Implement'));
     console.log(chalk.white('   In Cursor Chat, paste:'));
     console.log(chalk.bgBlue.white('\n   /speckit.implement   \n'));
     console.log(chalk.dim('   This executes all tasks and builds your feature\n'));
   } else {
-    console.log(chalk.bold.white('\n📍 Step 4: Start Building Your MVP\n'));
+    console.log(chalk.bold.white('\n📍 Step 5: Start Building Your MVP\n'));
     console.log(chalk.white('   Use Cursor Chat to ask for features:'));
     console.log(chalk.cyan('   "Build a user dashboard using the design system components"'));
     console.log(chalk.dim('   Components available: Button, Input, Modal, EmptyState, Placeholder'));
@@ -178,13 +186,37 @@ async function main() {
         console.log(chalk.dim('\nℹ️  Skipping SpecKit - you can add it later if needed\n'));
       }
     } else {
-      // uv not available, skip SpecKit
-      console.log(chalk.yellow('⚠️  SpecKit requires uv (Python package manager) which is not installed.'));
-      console.log(chalk.dim('   Skipping SpecKit setup.\n'));
-      console.log(chalk.white('   To use SpecKit in the future:'));
-      console.log(chalk.cyan('   1. Install uv: ') + chalk.dim('curl -LsSf https://astral.sh/uv/install.sh | sh'));
-      console.log(chalk.cyan('   2. Run: ') + chalk.dim('uv tool install specify-cli --from git+https://github.com/github/spec-kit.git'));
-      console.log(chalk.cyan('   3. In project: ') + chalk.dim('specify init --here --ai cursor-agent\n'));
+      // uv not available - offer to install it
+      console.log('='.repeat(70));
+      console.log(chalk.bold.yellow('⚡ SPECKIT REQUIRES UV ⚡'));
+      console.log('='.repeat(70));
+      console.log(chalk.white('\nSpecKit needs "uv" (Python package manager) which is not installed.\n'));
+      console.log(chalk.yellow('Would you like to install uv automatically?\n'));
+      console.log(chalk.dim('This will run: curl -LsSf https://astral.sh/uv/install.sh | sh'));
+      console.log('='.repeat(70) + '\n');
+      
+      const { installUvNow } = await inquirer.prompt([{
+        type: 'confirm',
+        name: 'installUvNow',
+        message: 'Install uv now?',
+        default: false
+      }]);
+      
+      if (installUvNow) {
+        const uvInstalled = await installUv();
+        if (uvInstalled) {
+          console.log(chalk.green('✓ uv installation complete!'));
+          console.log(chalk.yellow('\n⚠️  Important: Restart your terminal to use uv.'));
+          console.log(chalk.white('Then run this CLI again to set up SpecKit.\n'));
+        }
+      } else {
+        console.log(chalk.dim('\nℹ️  Skipping uv installation.'));
+        console.log(chalk.white('\n   To install uv manually later:'));
+        console.log(chalk.cyan('   macOS/Linux: ') + chalk.dim('curl -LsSf https://astral.sh/uv/install.sh | sh'));
+        console.log(chalk.cyan('   Windows:     ') + chalk.dim('powershell -c "irm https://astral.sh/uv/install.ps1 | iex"'));
+        console.log(chalk.dim('\n   Then restart terminal and run this CLI again.\n'));
+      }
+      
       usedSpecKit = false;
     }
 
