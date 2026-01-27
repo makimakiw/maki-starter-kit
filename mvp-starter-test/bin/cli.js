@@ -10,66 +10,89 @@ import { setupDesignSystem } from '../lib/setup-design-system.js';
 import { setupSpecKit } from '../lib/setup-speckit.js';
 import { setupPencil } from '../lib/setup-pencil.js';
 import { extractToPencil } from '../lib/extract-to-pencil.js';
-import { checkPrerequisites, showPostInstallHelp } from '../lib/check-prerequisites.js';
+import { checkPrerequisites } from '../lib/check-prerequisites.js';
+import { checkUvAvailable } from '../lib/setup-speckit.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Experimental: Try to create .pen file directly using Pencil MCP
-async function tryCreatePencilFile(projectDir, projectInfo) {
-  try {
-    const fs = await import('fs-extra');
-    const path = await import('path');
-    
-    // Read the CREATE-PENCIL-FILE.md that was generated
-    const promptFile = path.join(projectDir, 'design-system', 'CREATE-PENCIL-FILE.md');
-    
-    if (!await fs.pathExists(promptFile)) {
-      return false;
-    }
-    
-    console.log(chalk.dim('   Checking for Pencil MCP access...\n'));
-    
-    // Try to import and use Pencil MCP tools
-    // This will likely fail because MCP servers run in Cursor's context
-    // But it's worth trying!
-    
-    // For now, we can't directly call MCP from Node.js CLI
-    // The MCP protocol requires Cursor's infrastructure
-    
-    return false; // Auto-creation not available from CLI
-    
-  } catch (error) {
-    return false;
+// Show complete step-by-step instructions
+function showCompleteInstructions(projectDir, projectInfo, usedSpecKit) {
+  console.log('\n' + '='.repeat(70));
+  console.log(chalk.bold.green('📋 STEP-BY-STEP INSTRUCTIONS'));
+  console.log('='.repeat(70));
+  
+  console.log(chalk.bold.white('\n✅ What Was Created:\n'));
+  console.log(chalk.dim('  • Next.js project with Tailwind CSS v4'));
+  console.log(chalk.dim('  • Design system with 62+ tokens in app/globals.css'));
+  console.log(chalk.dim('  • 5 components: Button, Input, Modal, EmptyState, Placeholder'));
+  console.log(chalk.dim('  • Pencil integration files'));
+  console.log(chalk.dim('  • Component extraction metadata'));
+  if (usedSpecKit) {
+    console.log(chalk.dim('  • SpecKit framework (.specify/ folder)'));
   }
-}
-
-// Auto-start SpecKit workflow in terminal
-async function startSpecKitWorkflow(projectDir, projectInfo) {
-  try {
-    console.log(chalk.cyan('📋 SpecKit is ready to use!\n'));
-    console.log(chalk.white('Next Steps for SpecKit:'));
-    console.log(chalk.cyan('  1. Open Cursor: ') + chalk.white(`cursor ${projectInfo.projectName}`));
-    console.log(chalk.cyan('  2. Start spec workflow: ') + chalk.white('@speckit.specify.md'));
-    console.log(chalk.cyan('  3. Follow the prompts to create your specification\n'));
+  
+  console.log(chalk.bold.white('\n📍 Step 1: Navigate to Your Project\n'));
+  console.log(chalk.cyan(`   cd ${projectInfo.projectName}`));
+  
+  console.log(chalk.bold.white('\n📍 Step 2: Open in Cursor\n'));
+  console.log(chalk.cyan('   cursor .'));
+  
+  console.log(chalk.bold.white('\n📍 Step 3: Create Pencil Design File\n'));
+  console.log(chalk.white('   In Cursor Chat, paste this EXACT command:'));
+  console.log(chalk.bgBlue.white('\n   @CREATE-PENCIL-FILE.md please create the Pencil file   \n'));
+  console.log(chalk.dim('   This will create a visual design system file with all components'));
+  
+  if (usedSpecKit) {
+    console.log(chalk.bold.white('\n📍 Step 4: Start SpecKit Workflow (Optional but Recommended)\n'));
+    console.log(chalk.white('   SpecKit helps you build with a structured spec → plan → implement flow.\n'));
     
-    console.log(chalk.dim('💡 Tip: SpecKit files are in .specify/ folder\n'));
+    console.log(chalk.yellow('   Step 4a: Create Project Constitution'));
+    console.log(chalk.white('   In Cursor Chat, paste:'));
+    console.log(chalk.bgBlue.white('\n   /speckit.constitution Create principles focused on design system usage, clean code, and user experience   \n'));
+    console.log(chalk.dim('   This creates your project\'s governing principles\n'));
     
-    // Try to open Cursor automatically
-    const open = (await import('open')).default;
-    try {
-      await open(projectDir, { app: { name: 'cursor' } });
-      console.log(chalk.green('✓ Opening project in Cursor...\n'));
-    } catch (error) {
-      console.log(chalk.dim('   (Manual: open Cursor and navigate to project)\n'));
-    }
+    console.log(chalk.yellow('   Step 4b: Define What to Build'));
+    console.log(chalk.white('   In Cursor Chat, paste:'));
+    console.log(chalk.bgBlue.white('\n   /speckit.specify Build [describe your MVP here, e.g., "a user dashboard with profile editing"]   \n'));
+    console.log(chalk.dim('   Be specific about what you want to build\n'));
     
-    return true;
-  } catch (error) {
-    console.log(chalk.yellow('⚠️  Could not auto-start SpecKit'));
-    console.log(chalk.dim(`   Error: ${error.message}\n`));
-    return false;
+    console.log(chalk.yellow('   Step 4c: Create Technical Plan'));
+    console.log(chalk.white('   In Cursor Chat, paste:'));
+    console.log(chalk.bgBlue.white('\n   /speckit.plan Use the existing design system components, Next.js, and Tailwind CSS   \n'));
+    console.log(chalk.dim('   This creates a detailed implementation plan\n'));
+    
+    console.log(chalk.yellow('   Step 4d: Generate Tasks'));
+    console.log(chalk.white('   In Cursor Chat, paste:'));
+    console.log(chalk.bgBlue.white('\n   /speckit.tasks   \n'));
+    console.log(chalk.dim('   This breaks down the plan into actionable tasks\n'));
+    
+    console.log(chalk.yellow('   Step 4e: Implement'));
+    console.log(chalk.white('   In Cursor Chat, paste:'));
+    console.log(chalk.bgBlue.white('\n   /speckit.implement   \n'));
+    console.log(chalk.dim('   This executes all tasks and builds your feature\n'));
+  } else {
+    console.log(chalk.bold.white('\n📍 Step 4: Start Building Your MVP\n'));
+    console.log(chalk.white('   Use Cursor Chat to ask for features:'));
+    console.log(chalk.cyan('   "Build a user dashboard using the design system components"'));
+    console.log(chalk.dim('   Components available: Button, Input, Modal, EmptyState, Placeholder'));
   }
+  
+  console.log(chalk.bold.white('\n📍 Final Step: Run Dev Server\n'));
+  console.log(chalk.white('   When ready to see your app:'));
+  console.log(chalk.cyan('   npm run dev'));
+  console.log(chalk.dim('   Opens at http://localhost:3000\n'));
+  
+  console.log(chalk.bold.yellow('💡 Pro Tips:\n'));
+  console.log(chalk.dim('   • All design tokens are in app/globals.css'));
+  console.log(chalk.dim('   • Components are in design-system/pencildraw/'));
+  console.log(chalk.dim('   • Use @filename.md to reference files in Cursor'));
+  if (usedSpecKit) {
+    console.log(chalk.dim('   • SpecKit files are in .specify/ folder'));
+    console.log(chalk.dim('   • Each SpecKit command creates new files in specs/'));
+  }
+  
+  console.log('\n' + '='.repeat(70) + '\n');
 }
 
 async function main() {
@@ -117,71 +140,73 @@ async function main() {
     console.log('\n' + chalk.bold.cyan('📤 Extracting Components to Pencil...\n'));
     await extractToPencil(projectDir, projectInfo);
 
-    console.log(chalk.dim('[DEBUG] Extraction completed, moving to next step...\n'));
-
-    // Try to auto-create .pen file using Pencil MCP
-    console.log('\n' + chalk.bold.magenta('🎨 Attempting to Auto-Generate .pen File...\n'));
-    try {
-      const pencilCreated = await tryCreatePencilFile(projectDir, projectInfo);
-      if (!pencilCreated) {
-        console.log(chalk.yellow('⚠️  Auto-generation not available (requires Cursor context)'));
-        console.log(chalk.dim('   → See PENCIL-LIMITATION.md for technical details'));
-        console.log(chalk.cyan('   → Use in Cursor: @CREATE-PENCIL-FILE.md\n'));
-      }
-    } catch (error) {
-      console.log(chalk.yellow('⚠️  Auto-generation not available'));
-      console.log(chalk.cyan('   → Use in Cursor: @CREATE-PENCIL-FILE.md\n'));
-    }
-
-    console.log(chalk.dim('[DEBUG] About to show SpecKit prompt...\n'));
-
-    // Ask about SpecKit (optional) - VERY VISIBLE
-    console.log('\n' + '='.repeat(70));
-    console.log(chalk.bold.yellow('⚡ IMPORTANT CHOICE ⚡'));
-    console.log('='.repeat(70));
-    console.log(chalk.bold.blue('\n📋 SpecKit Setup (Optional)\n'));
-    console.log(chalk.white('SpecKit provides spec-driven development workflow'));
-    console.log(chalk.white('Recommended for team projects, optional for solo work\n'));
-    console.log('='.repeat(70) + '\n');
+    // Check if SpecKit can be installed (requires uv)
+    console.log('\n' + chalk.cyan('🔍 Checking for SpecKit compatibility...\n'));
+    const uvAvailable = await checkUvAvailable();
     
-    console.log(chalk.dim('[DEBUG] Calling inquirer.prompt for SpecKit...\n'));
-    
-    const { useSpecKit } = await inquirer.prompt([{
-      type: 'confirm',
-      name: 'useSpecKit',
-      message: chalk.bold.yellow('Do you want to use SpecKit?'),
-      default: false
-    }]);
-    
-    console.log(chalk.dim(`[DEBUG] SpecKit choice: ${useSpecKit}\n`));
-
     let usedSpecKit = false;
-    if (useSpecKit) {
-      console.log('\n' + chalk.bold.cyan('📋 Setting Up SpecKit Framework...\n'));
-      await setupSpecKit(projectDir, projectInfo);
-      usedSpecKit = true;
-      console.log(chalk.green('✔ SpecKit configured!\n'));
-      console.log(chalk.yellow('⚡ SpecKit will auto-start after dev server launches\n'));
+    
+    if (uvAvailable) {
+      // Ask about SpecKit (optional)
+      console.log('='.repeat(70));
+      console.log(chalk.bold.yellow('⚡ IMPORTANT CHOICE ⚡'));
+      console.log('='.repeat(70));
+      console.log(chalk.bold.blue('\n📋 SpecKit Setup (Optional)\n'));
+      console.log(chalk.white('SpecKit provides spec-driven development workflow'));
+      console.log(chalk.white('Recommended for team projects, optional for solo work\n'));
+      console.log('='.repeat(70) + '\n');
+      
+      const { useSpecKit } = await inquirer.prompt([{
+        type: 'confirm',
+        name: 'useSpecKit',
+        message: chalk.bold.yellow('Do you want to use SpecKit?'),
+        default: false
+      }]);
+
+      if (useSpecKit) {
+        console.log('\n' + chalk.bold.cyan('📋 Setting Up SpecKit Framework...\n'));
+        try {
+          await setupSpecKit(projectDir, projectInfo);
+          usedSpecKit = true;
+          console.log(chalk.green('✔ SpecKit configured!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  SpecKit setup incomplete - continuing without it.'));
+          console.log(chalk.dim('   You can set it up manually later if needed.\n'));
+          usedSpecKit = false;
+        }
+      } else {
+        console.log(chalk.dim('\nℹ️  Skipping SpecKit - you can add it later if needed\n'));
+      }
     } else {
-      console.log(chalk.dim('\nℹ️  Skipping SpecKit - you can add it later if needed\n'));
+      // uv not available, skip SpecKit
+      console.log(chalk.yellow('⚠️  SpecKit requires uv (Python package manager) which is not installed.'));
+      console.log(chalk.dim('   Skipping SpecKit setup.\n'));
+      console.log(chalk.white('   To use SpecKit in the future:'));
+      console.log(chalk.cyan('   1. Install uv: ') + chalk.dim('curl -LsSf https://astral.sh/uv/install.sh | sh'));
+      console.log(chalk.cyan('   2. Run: ') + chalk.dim('uv tool install specify-cli --from git+https://github.com/github/spec-kit.git'));
+      console.log(chalk.cyan('   3. In project: ') + chalk.dim('specify init --here --ai cursor-agent\n'));
+      usedSpecKit = false;
     }
 
     // Success message
-    console.log('\n' + chalk.green.bold('🎉 Success! Your project is ready.\n'));
+    console.log('\n' + chalk.green.bold('🎉 Setup Complete! All files created.\n'));
 
-    // Show contextual next steps BEFORE starting server
-    await showPostInstallHelp(projectDir, projectInfo, usedSpecKit);
+    // Show complete step-by-step instructions BEFORE offering dev server
+    await showCompleteInstructions(projectDir, projectInfo, usedSpecKit);
 
     // Ask if they want to start the dev server now
+    console.log('\n' + chalk.bold.cyan('Final Step: Development Server\n'));
     const { startNow } = await inquirer.prompt([{
       type: 'confirm',
       name: 'startNow',
-      message: 'Start the dev server now?',
-      default: true
+      message: 'Start the dev server now (this will block the terminal)?',
+      default: false // Changed to false so users can review instructions first
     }]);
 
     if (startNow) {
-      console.log('\n' + chalk.cyan('🚀 Starting dev server...\n'));
+      console.log('\n' + chalk.yellow('⚠️  The dev server will block this terminal.'));
+      console.log(chalk.dim('   Press Ctrl+C to stop it when needed.\n'));
+      console.log(chalk.cyan('🚀 Starting dev server...\n'));
       
       const { execa } = await import('execa');
       const open = (await import('open')).default;
@@ -218,24 +243,10 @@ async function main() {
               await open(serverUrl);
               browserOpened = true;
               console.log(chalk.green(`✓ Browser opened to ${serverUrl}\n`));
-              
-              // Auto-start SpecKit workflow if user chose it
-              if (usedSpecKit) {
-                console.log(chalk.bold.magenta('\n🚀 Auto-Starting SpecKit Workflow...\n'));
-                await startSpecKitWorkflow(projectDir, projectInfo);
-              }
-              
-              console.log(chalk.bold.yellow('\n⏸️  Dev server is running. Press Ctrl+C to stop.\n'));
+              console.log(chalk.bold.yellow('⏸️  Dev server is running. Press Ctrl+C to stop.\n'));
             } catch (error) {
               console.log(chalk.yellow(`⚠️  Could not auto-open browser. Please visit: ${serverUrl}\n`));
-              
-              // Still try to start SpecKit even if browser fails
-              if (usedSpecKit) {
-                console.log(chalk.bold.magenta('\n🚀 Auto-Starting SpecKit Workflow...\n'));
-                await startSpecKitWorkflow(projectDir, projectInfo);
-              }
-              
-              console.log(chalk.bold.yellow('\n⏸️  Dev server is running. Press Ctrl+C to stop.\n'));
+              console.log(chalk.bold.yellow('⏸️  Dev server is running. Press Ctrl+C to stop.\n'));
             }
           }, 1000);
         }
@@ -245,10 +256,7 @@ async function main() {
       await devServer;
       
     } else {
-      console.log(chalk.cyan('\nNext steps:\n'));
-      console.log(chalk.white('  1. ') + chalk.dim(`cd ${projectInfo.projectName}`));
-      console.log(chalk.white('  2. ') + chalk.dim('npm run dev'));
-      console.log(chalk.white('  3. ') + chalk.dim('Open http://localhost:3000\n'));
+      console.log(chalk.dim('\n✓ Setup complete! Follow the instructions above to continue.\n'));
     }
 
   } catch (error) {
