@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-01-28
+
+### Fixed
+- **CRITICAL:** Fixed repository structure that prevented installation from Git clone
+  - Moved all CLI files from `mvp-starter-test/` subdirectory to repository root
+  - Removed old test project files from root
+  - Now works correctly: `git clone` → `npm install` → `npm link` → `mvp-init`
+
+### Changed
+- Cleaned up repository by removing `.specify/` templates (not part of CLI)
+- Updated .gitignore to ignore test projects created by CLI
+
+## [1.2.0] - 2026-01-28
+
+### Added
+- Automatic `uv` installation prompt when choosing SpecKit
+- Clear Pencil installation instructions in step-by-step guide
+- Better error messaging and UX throughout CLI flow
+
 ## [1.1.1] - 2026-01-27
 
 ### Fixed
