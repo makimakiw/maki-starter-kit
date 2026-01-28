@@ -252,7 +252,12 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## Version
 
-**Current Version:** 2.0.0
+**Current Version:** 2.0.3
+
+**What's New in v2.0.3:**
+- ✅ **Always generates CREATE-PENCIL-FILE.md** - Works on clean installs
+- ✅ **Fixed MCP detection** - Works on all machines, no hardcoded paths
+- ✅ **Better messaging** - Shows exact file location and @reference path
 
 **What's New in v2.0.0 (BREAKING CHANGES):**
 - ✅ **Monorepo structure** - Parent folder with nested Next.js app
@@ -269,6 +274,7 @@ project-folder/            (git repo)
 └── app-name/             (Next.js app)
     ├── app/
     ├── design-system/
+    │   └── CREATE-PENCIL-FILE.md  ← Always created!
     └── package.json
 ```
 
