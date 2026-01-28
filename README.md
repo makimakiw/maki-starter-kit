@@ -288,7 +288,17 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## 🎉 Version
 
-**Current Version:** 🍣 **3.2.1 - MAKI** 🍣
+**Current Version:** 🍣 **3.2.2 - MAKI** 🍣
+
+### 🐛 What's New in v3.2.2 (Bug Fix)
+
+**Fixed CREATE-PENCIL-FILE.md Generation:**
+- ✅ **File creation more robust** - Explicit directory checks
+- ✅ **Better error reporting** - Full stack traces and clear messages
+- ✅ **Verification** - Confirms file was actually created
+- ✅ **Debugging** - Shows full file path in output
+
+If file creation fails, you'll now see exactly why instead of silent failure!
 
 ### 🧹 What's New in v3.2.1 (Repository Cleanup)
 

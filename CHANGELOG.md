@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.2] - 2026-01-28 - 🐛 Fixed CREATE-PENCIL-FILE.md Generation
+
+### Bug Fix: File Creation More Robust
+
+**Problem:** CREATE-PENCIL-FILE.md was not being created reliably, even though the CLI said it was.
+
+**Root Cause:** 
+- No explicit directory existence check before writing
+- No verification that file was actually created
+- Error handling was swallowing failures
+- Insufficient error logging
+
+**Solution:**
+- ✅ Added explicit `fs.ensureDir()` before file write
+- ✅ Added file existence verification after write
+- ✅ Better error handling with full stack traces
+- ✅ Added full file path to console output for debugging
+- ✅ Check return value from `generatePenFile()` before proceeding
+
+**Changes:**
+- `lib/generate-pen-file.js`: 
+  - Ensure design-system directory exists
+  - Verify file was created
+  - Better error logging with stack trace
+  - Show full file path in console
+- `lib/extract-to-pencil.js`:
+  - Check return value from generatePenFile
+  - Display error if file generation failed
+
+**Impact:**
+Users will now see clear errors if file creation fails, and the file creation is more robust with directory checks.
+
 ## [3.2.1] - 2026-01-28 - 🧹 Repository Cleanup
 
 ### 🗑️ Removed Unnecessary Files
