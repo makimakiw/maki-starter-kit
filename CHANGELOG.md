@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.3] - 2026-01-28
+
+### Fixed
+- **Always generate CREATE-PENCIL-FILE.md** - File now created regardless of MCP detection status
+- **Fixed MCP detection** - Removed hardcoded username path, now uses proper checkPencilMCP from lib/check-pencil.js
+- **Better messaging** - Clear indication of file location and Cursor reference path
+- Shows helpful message whether MCP is detected or not
+
+### Changed
+- CREATE-PENCIL-FILE.md generation moved outside MCP availability check
+- Improved console output to show exact file path and @reference for Cursor
+- Extraction now always succeeds and creates the instruction file
+
 ## [2.0.2] - 2026-01-28
 
 ### Fixed
