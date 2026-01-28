@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.1] - 2026-01-28 - 🧹 Repository Cleanup
+
+### 🗑️ Removed Unnecessary Files
+
+**What was removed:**
+- All version-specific documentation files (V*.md)
+- Development documentation (docs/ folder)
+- Unused scripts folder
+- Cursor development files (.cursor/ folder)
+- Temporary test files (CLEANUP-SUMMARY.md, GIT-SETUP.md, etc.)
+
+**What remains (lean & essential):**
+- ✅ `bin/` - CLI entry point
+- ✅ `lib/` - Core CLI logic (9 modules)
+- ✅ `package.json` - Package configuration
+- ✅ `package-lock.json` - Dependency lock
+- ✅ `README.md` - Main documentation
+- ✅ `CHANGELOG.md` - Version history
+- ✅ `.gitignore` - Git ignore rules
+
+**Result:** Clean, production-ready repository with only essential files!
+
+**Files changed:**
+- Removed 20+ documentation files
+- Package size reduced significantly
+- Easier to navigate and maintain
+
 ## [3.2.0] - 2026-01-28 - 🔧 Fixed Pencil Variables (CRITICAL!)
 
 ### 🐛 Critical Fix: Pencil Now Uses Variables (Not Hardcoded!)

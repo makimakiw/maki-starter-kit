@@ -288,7 +288,17 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## 🎉 Version
 
-**Current Version:** 🍣 **3.2.0 - MAKI** 🍣
+**Current Version:** 🍣 **3.2.1 - MAKI** 🍣
+
+### 🧹 What's New in v3.2.1 (Repository Cleanup)
+
+**Clean & Lean:**
+- 🗑️ **Removed 20+ documentation files** - Keeping only essentials
+- 📦 **Smaller package size** - Faster to clone and install
+- 🎯 **Production-ready** - Only essential CLI files included
+- ✨ **Easier to navigate** - No clutter, just the core tool
+
+**What remains:** `bin/`, `lib/`, `package.json`, `README.md`, `CHANGELOG.md`, `.gitignore`
 
 ### 🔧 What's New in v3.2.0 (CRITICAL FIX!)
 
