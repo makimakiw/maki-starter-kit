@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2026-01-28 - 📝 Installation Instructions Update
+
+### 🔧 Fixed
+- **Clearer installation steps** - Added explicit numbered steps to prevent directory navigation errors
+- **Verification steps** - Added `ls package.json` check to ensure users are in correct directory
+- **Warning messages** - Added clear warnings about following steps in order
+- **Quick install option** - Added one-liner command for experienced users
+
+### 📚 Documentation Improvements
+- **Troubleshooting section** - Added comprehensive troubleshooting guide in README
+- **Error solutions** - Documented common errors (ENOENT, command not found, cd errors)
+- **Installation checklist** - Added step-by-step verification checklist
+- **Updated colleague messages** - Fixed repo URLs and improved clarity in all documentation
+
+### 🔗 Updated Files
+- `README.md` - Better installation section, new troubleshooting section
+- `MAKI-IMPLEMENTATION-COMPLETE.md` - Updated colleague messages with correct repo URL
+- `CHANGELOG.md` - This entry
+
+### 🎯 Why This Update
+Prevents common first-time installation errors where users run `npm install` from wrong directory or skip the `cd maki-starter-kit` step.
+
 ## [3.0.0] - 2026-01-28 - 🍣 MAKI REBRAND
 
 ### 🎨 Major Visual Overhaul

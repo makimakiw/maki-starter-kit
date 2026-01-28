@@ -27,26 +27,42 @@
 
 ### Installation
 
+**⚠️ Important:** Follow these steps in order and make sure you're in the correct directory!
+
 ```bash
-# Clone the repository
+# Step 1: Clone the repository
 git clone https://github.com/makimakiw/maki-starter-kit.git
+
+# Step 2: Navigate into the project directory (REQUIRED!)
 cd maki-starter-kit
 
-# Install dependencies
+# Step 3: Verify you're in the right place (should show: package.json)
+ls package.json
+
+# Step 4: Install dependencies
 npm install
 
-# Link globally (optional)
-npm link
+# Step 5: You're ready! Run MAKI
+maki-init
+```
+
+**Quick Install (one command):**
+```bash
+git clone https://github.com/makimakiw/maki-starter-kit.git && cd maki-starter-kit && npm install && maki-init
 ```
 
 ### Usage
 
+After installation, you can run MAKI from anywhere:
+
 ```bash
-# Run the interactive CLI
+# From within the maki-starter-kit directory
 maki-init
 
-# Or with npx
-npx maki-init
+# Or link globally first (optional)
+npm link
+# Then run from anywhere
+maki-init
 ```
 
 **MAKI will guide you through:**
@@ -322,6 +338,71 @@ your-project/              (git repo)
     │   └── CREATE-PENCIL-FILE.md  ← Always created!
     └── package.json
 ```
+
+## 🔧 Troubleshooting
+
+### Error: "ENOENT: no such file or directory, open 'package.json'"
+
+**Cause:** You're not in the maki-starter-kit directory.
+
+**Solution:**
+```bash
+# Check where you are
+pwd
+
+# Navigate to the correct directory
+cd maki-starter-kit
+
+# Verify package.json exists
+ls package.json
+
+# Now try again
+npm install
+```
+
+### Error: "cd: maki-starter-kit: No such file or directory"
+
+**Cause:** The repository wasn't cloned successfully, or you're not in the parent directory.
+
+**Solution:**
+```bash
+# Check if the directory exists
+ls | grep maki
+
+# If you don't see maki-starter-kit, clone again
+git clone https://github.com/makimakiw/maki-starter-kit.git
+
+# Then navigate into it
+cd maki-starter-kit
+```
+
+### Error: "Command not found: maki-init"
+
+**Cause:** You need to run maki-init from within the maki-starter-kit directory, or link it globally first.
+
+**Solution:**
+```bash
+# Option 1: Run from within the directory
+cd maki-starter-kit
+maki-init
+
+# Option 2: Link globally first
+cd maki-starter-kit
+npm link
+# Now you can run maki-init from anywhere
+```
+
+### Installation Checklist
+
+If you're having issues, verify each step:
+
+- [ ] Cloned the repository: `git clone https://github.com/makimakiw/maki-starter-kit.git`
+- [ ] Changed into directory: `cd maki-starter-kit`
+- [ ] package.json exists: `ls package.json` (should output: package.json)
+- [ ] Installed dependencies: `npm install` (should complete without errors)
+- [ ] Ready to run: `maki-init`
+
+---
 
 ## License
 
