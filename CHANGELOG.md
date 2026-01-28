@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.2] - 2026-01-28
+
+### Fixed
+- Pencil file generation now uses relative paths for monorepo structure
+- CREATE-PENCIL-FILE.md now correctly references `appName/design-system/file.pen`
+- Added explicit filePath parameters to batch_design and set_variables tool instructions
+- Added note about workspace root requirement for Pencil MCP operations
+
 ## [2.0.1] - 2026-01-28
 
 ### Fixed
