@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.3] - 2026-01-28 - 📝 Clearer Pencil File Instructions
+
+### Documentation Update: How to Reference the File in Cursor
+
+**Problem:** Users were confused because CLI showed `@appname/design-system/CREATE-PENCIL-FILE.md` but Cursor doesn't use full paths.
+
+**Solution:** Updated instructions to show the correct way to reference files in Cursor.
+
+**Changes:**
+- `bin/cli.js`: Changed instructions from `@${appName}/design-system/CREATE-PENCIL-FILE.md` to `@CREATE-PENCIL-FILE.md`
+- Added tip: "Just type @CREATE and click it from the dropdown!"
+- `README.md`: Updated all examples to use simple filename reference
+- Explained that Cursor finds files by name, not full path
+
+**What Users See Now:**
+```
+In Cursor Chat, type @ and then:
+   @CREATE-PENCIL-FILE.md create the Pencil design file
+   
+💡 Tip: Just type @CREATE and click it from the dropdown!
+```
+
+**Why This Matters:**
+- Less confusing for users
+- Matches how Cursor actually works
+- Shows the filename that will appear in Cursor's @ dropdown
+- Faster to type!
+
 ## [3.2.2] - 2026-01-28 - 🐛 Fixed CREATE-PENCIL-FILE.md Generation
 
 ### Bug Fix: File Creation More Robust

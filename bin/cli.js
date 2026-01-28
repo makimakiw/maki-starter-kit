@@ -93,8 +93,9 @@ function showCompleteInstructions(projectDir, appDir, projectInfo, usedSpecKit, 
     console.log(chalk.green.bold('   ✅ Pencil MCP detected and active!\n'));
     
     console.log(chalk.bold.magenta('\n🎨 Step 4: Create Pencil Design File\n'));
-    console.log(chalk.white('   In Cursor Chat, paste this magic command:'));
-    console.log(chalk.bgMagenta.white(`\n   @${appName}/design-system/CREATE-PENCIL-FILE.md create the Pencil design file   \n`));
+    console.log(chalk.white('   In Cursor Chat, type @ and then:'));
+    console.log(chalk.bgMagenta.white(`\n   @CREATE-PENCIL-FILE.md create the Pencil design file   \n`));
+    console.log(chalk.dim('   💡 Tip: Just type @CREATE and click it from the dropdown!'));
     console.log(chalk.dim('   ✨ This creates a visual design system with beautifully styled components!'));
   } else {
     console.log(chalk.bold.magenta('\n✏️  Step 3: Install Pencil MCP\n'));
@@ -107,8 +108,9 @@ function showCompleteInstructions(projectDir, appDir, projectInfo, usedSpecKit, 
     console.log(chalk.dim('\n   After installing, restart Cursor 🔄\n'));
     
     console.log(chalk.bold.magenta('\n🎨 Step 4: Create Pencil Design File\n'));
-    console.log(chalk.white('   After Pencil is installed, in Cursor Chat paste:'));
-    console.log(chalk.bgMagenta.white(`\n   @${appName}/design-system/CREATE-PENCIL-FILE.md create the Pencil design file   \n`));
+    console.log(chalk.white('   After Pencil is installed, in Cursor Chat type:'));
+    console.log(chalk.bgMagenta.white(`\n   @CREATE-PENCIL-FILE.md create the Pencil design file   \n`));
+    console.log(chalk.dim('   💡 Tip: Just type @CREATE and click it from the dropdown!'));
     console.log(chalk.dim('   ✨ This creates a visual design system with beautifully styled components!'));
   }
   

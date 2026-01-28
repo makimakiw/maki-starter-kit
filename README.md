@@ -137,10 +137,12 @@ After installing Pencil MCP in Cursor:
 3. ✅ Enable Pencil MCP server
 4. 🔄 Restart Cursor
 
-Then create your visual design system:
+Then create your visual design system in Cursor Chat:
 ```
-@app-name/design-system/CREATE-PENCIL-FILE.md create the Pencil file
+@CREATE-PENCIL-FILE.md create the Pencil file
 ```
+
+💡 **Tip:** Just type `@CREATE` and select it from the dropdown - Cursor will find it automatically!
 
 MAKI will detect if Pencil is installed and show you exactly what to do!
 
@@ -217,7 +219,7 @@ mvp-init
 
 1. **Run CLI** → Answer prompts
 2. **Open in Cursor** → `cursor .`
-3. **Create Pencil File** → Use @CREATE-PENCIL-FILE.md
+3. **Create Pencil File** → Type `@CREATE-PENCIL-FILE.md` in Cursor Chat (or just `@CREATE` and click)
 4. **Build Features:**
    - With SpecKit: Follow 5-step workflow
    - Without SpecKit: Build with Cursor Chat
@@ -288,7 +290,17 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## 🎉 Version
 
-**Current Version:** 🍣 **3.2.2 - MAKI** 🍣
+**Current Version:** 🍣 **3.2.3 - MAKI** 🍣
+
+### 📝 What's New in v3.2.3 (Clearer Instructions)
+
+**Better Pencil File Instructions:**
+- ✅ **Simplified reference** - Shows `@CREATE-PENCIL-FILE.md` (not full path)
+- ✅ **Matches Cursor behavior** - How @ actually works in Cursor
+- ✅ **Added helpful tip** - "Just type @CREATE and click from dropdown"
+- ✅ **Less confusion** - No more wondering why the full path doesn't work!
+
+Now the instructions match what you actually see in Cursor! 🎯
 
 ### 🐛 What's New in v3.2.2 (Bug Fix)
 
