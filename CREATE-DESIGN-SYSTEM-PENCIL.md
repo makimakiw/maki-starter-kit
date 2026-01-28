@@ -1,74 +1,26 @@
-import fs from 'fs-extra';
-import path from 'path';
-import chalk from 'chalk';
-import ora from 'ora';
-
-export async function generatePenFile(projectDir, projectInfo, components, tokens) {
-  const spinner = ora('Creating Pencil generation script...').start();
-  
-  try {
-    const { projectName, appName, primaryColor } = projectInfo;
-    const pencilFileName = `pencil-designsystem-${projectName}.pen`;
-    
-    // Use relative path from workspace root (monorepo root)
-    const relativePencilPath = appName 
-      ? `${appName}/design-system/${pencilFileName}`
-      : `design-system/${pencilFileName}`;
-    
-    // Create a comprehensive prompt file with visual adjustments
-    const promptFilePath = path.join(projectDir, 'design-system', 'CREATE-PENCIL-FILE.md');
-    const promptContent = createPencilPrompt(projectName, relativePencilPath, primaryColor);
-    
-    await fs.writeFile(promptFilePath, promptContent, 'utf-8');
-    
-    spinner.succeed(chalk.green('CREATE-PENCIL-FILE.md created!'));
-    
-    const referencePathForCursor = appName 
-      ? `@${appName}/design-system/CREATE-PENCIL-FILE.md`
-      : '@design-system/CREATE-PENCIL-FILE.md';
-    
-    console.log(chalk.bold('\n  📝 Pencil File Instructions Created'));
-    console.log(chalk.cyan(`     • File: ${appName ? appName + '/' : ''}design-system/CREATE-PENCIL-FILE.md`));
-    console.log(chalk.cyan(`     • Reference in Cursor: ${referencePathForCursor}`));
-    console.log(chalk.dim('\n     Use this file in Cursor Chat to generate your .pen file'));
-    console.log(chalk.dim('     with all components and design tokens.\n'));
-    
-    return true;
-    
-  } catch (error) {
-    spinner.fail('Failed to create Pencil script');
-    console.error(chalk.red('  Error:'), error.message);
-    return false;
-  }
-}
-
-// Create comprehensive Pencil prompt with visual adjustments
-function createPencilPrompt(projectName, pencilFilePath, primaryColor) {
-  return `# Create Design System Pencil File - ${projectName}
+# Create Design System Pencil File
 
 Please create a Pencil (.pen) file with the following design system components and tokens.
 
-**IMPORTANT VISUAL ADJUSTMENTS FOR BROWSER PARITY:**
+**IMPORTANT:** This file includes visual compensation adjustments to match browser rendering:
 - Button text: 17px (not 16px) with letter-spacing -0.2 and font-weight 500
-- Button heights: 44px (default) and 50px (large) - compensated for visual balance
-- Input fields: 44px tall with 16px text size
-- Input labels: 15px, font-weight 500
-- Helper text: 13px
-- All corner radii match design token values exactly
+- Button heights: 44px (default) and 50px (large)
+- Input fields: 44px tall with 16px text
+- All values use design tokens with $ prefix
 
-**File Path:** \`${pencilFilePath}\` (relative to workspace root)
+## File Setup
 
-**IMPORTANT:** Ensure Cursor workspace is opened at the project root (monorepo folder).
-
----
+```
+filePath: design-system-showcase.pen
+```
 
 ## Variables (Design Tokens)
 
 Create these variables in the Pencil file:
 
-\`\`\`javascript
+```javascript
 // Colors
-$color-primary: ${primaryColor}
+$color-primary: #3B82F6
 $color-primary-foreground: #FFFFFF
 $color-secondary: #D9D9DB
 $color-secondary-foreground: #2A2933
@@ -114,17 +66,13 @@ $shadow-sm: 0 1px 2px rgba(0,0,0,0.05)
 $shadow-md: 0 4px 6px rgba(0,0,0,0.1)
 $shadow-lg: 0 10px 15px rgba(0,0,0,0.1)
 $shadow-xl: 0 20px 25px rgba(0,0,0,0.1)
-\`\`\`
+```
 
----
-
-## Reusable Components
-
-### Component: Button Primary
+## Component: Button Primary (Reusable)
 
 Create a reusable component named "Button-Primary":
 
-\`\`\`javascript
+```javascript
 {
   name: "Button-Primary",
   reusable: true,
@@ -151,11 +99,13 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Button Secondary
+## Component: Button Secondary (Reusable)
 
-\`\`\`javascript
+Create a reusable component named "Button-Secondary":
+
+```javascript
 {
   name: "Button-Secondary",
   reusable: true,
@@ -181,11 +131,13 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Button Outline
+## Component: Button Outline (Reusable)
 
-\`\`\`javascript
+Create a reusable component named "Button-Outline":
+
+```javascript
 {
   name: "Button-Outline",
   reusable: true,
@@ -213,11 +165,13 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Button Large
+## Component: Button Large (Reusable)
 
-\`\`\`javascript
+Create a reusable component named "Button-Large":
+
+```javascript
 {
   name: "Button-Large",
   reusable: true,
@@ -243,11 +197,13 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Input Default
+## Component: Input Default (Reusable)
 
-\`\`\`javascript
+Create a reusable component named "Input-Default":
+
+```javascript
 {
   name: "Input-Default",
   reusable: true,
@@ -288,11 +244,13 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Input Error
+## Component: Input Error (Reusable)
 
-\`\`\`javascript
+Create a reusable component named "Input-Error":
+
+```javascript
 {
   name: "Input-Error",
   reusable: true,
@@ -340,11 +298,13 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Modal
+## Component: Modal (Reusable)
 
-\`\`\`javascript
+Create a reusable component named "Modal":
+
+```javascript
 {
   name: "Modal",
   reusable: true,
@@ -394,11 +354,13 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: EmptyState
+## Component: EmptyState (Reusable)
 
-\`\`\`javascript
+Create a reusable component named "EmptyState":
+
+```javascript
 {
   name: "EmptyState",
   reusable: true,
@@ -440,11 +402,14 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Placeholder Square
+## Component: Placeholder (Reusable)
 
-\`\`\`javascript
+Create 4 placeholder variations:
+
+### Placeholder Square:
+```javascript
 {
   name: "Placeholder-Square",
   reusable: true,
@@ -469,11 +434,10 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
-### Component: Placeholder Video
-
-\`\`\`javascript
+### Placeholder Video (16:9):
+```javascript
 {
   name: "Placeholder-Video",
   reusable: true,
@@ -498,15 +462,69 @@ Create a reusable component named "Button-Primary":
     }
   ]
 }
-\`\`\`
+```
 
----
+### Placeholder Portrait (3:4):
+```javascript
+{
+  name: "Placeholder-Portrait",
+  reusable: true,
+  type: "frame",
+  width: 150,
+  height: 200,
+  backgroundColor: $color-surface-elevated,
+  borderRadius: $radius-m,
+  strokeWeight: 2,
+  strokeDashArray: [8, 8],
+  stroke: $color-border,
+  layoutMode: "horizontal",
+  primaryAxisAlignItems: "center",
+  counterAxisAlignItems: "center",
+  children: [
+    {
+      type: "text",
+      content: "Portrait Photo",
+      fontSize: $font-size-sm,
+      fill: $color-text-muted,
+      textGrowth: "auto"
+    }
+  ]
+}
+```
 
-## Main Showcase Page Structure
+### Placeholder Landscape (4:3):
+```javascript
+{
+  name: "Placeholder-Landscape",
+  reusable: true,
+  type: "frame",
+  width: 320,
+  height: 240,
+  backgroundColor: $color-surface-elevated,
+  borderRadius: $radius-m,
+  strokeWeight: 2,
+  strokeDashArray: [8, 8],
+  stroke: $color-border,
+  layoutMode: "horizontal",
+  primaryAxisAlignItems: "center",
+  counterAxisAlignItems: "center",
+  children: [
+    {
+      type: "text",
+      content: "Landscape Photo",
+      fontSize: $font-size-sm,
+      fill: $color-text-muted,
+      textGrowth: "auto"
+    }
+  ]
+}
+```
 
-Create the main page layout with all component sections:
+## Main Showcase Page
 
-\`\`\`javascript
+Create the main page layout with all components:
+
+```javascript
 {
   name: "Design-System-Showcase",
   type: "frame",
@@ -516,7 +534,7 @@ Create the main page layout with all component sections:
   layoutMode: "vertical",
   itemSpacing: $spacing-12,
   children: [
-    // Header Section
+    // Header
     {
       type: "frame",
       width: "fill",
@@ -528,13 +546,15 @@ Create the main page layout with all component sections:
           content: "Design System Components",
           fontSize: 36,
           fontWeight: 700,
-          fill: $color-text-primary
+          fill: $color-text-primary,
+          textGrowth: "fixed-width"
         },
         {
           type: "text",
           content: "Complete design system with 5 components and 62+ design tokens",
           fontSize: $font-size-base,
-          fill: $color-text-secondary
+          fill: $color-text-secondary,
+          textGrowth: "fixed-width"
         }
       ]
     },
@@ -551,7 +571,8 @@ Create the main page layout with all component sections:
           content: "Buttons",
           fontSize: $font-size-2xl,
           fontWeight: 700,
-          fill: $color-text-primary
+          fill: $color-text-primary,
+          textGrowth: "fixed-width"
         },
         {
           type: "frame",
@@ -570,7 +591,20 @@ Create the main page layout with all component sections:
           layoutMode: "horizontal",
           itemSpacing: $spacing-4,
           children: [
-            { type: "instance", componentName: "Button-Large" }
+            { 
+              type: "instance", 
+              componentName: "Button-Large",
+              overrides: { text: "Large Primary" }
+            },
+            { 
+              type: "instance", 
+              componentName: "Button-Large",
+              overrides: { 
+                text: "Large Secondary",
+                backgroundColor: $color-secondary,
+                textColor: $color-secondary-foreground
+              }
+            }
           ]
         }
       ]
@@ -588,7 +622,8 @@ Create the main page layout with all component sections:
           content: "Inputs",
           fontSize: $font-size-2xl,
           fontWeight: 700,
-          fill: $color-text-primary
+          fill: $color-text-primary,
+          textGrowth: "fixed-width"
         },
         {
           type: "frame",
@@ -596,8 +631,37 @@ Create the main page layout with all component sections:
           layoutMode: "horizontal",
           itemSpacing: $spacing-4,
           children: [
-            { type: "instance", componentName: "Input-Default" },
-            { type: "instance", componentName: "Input-Error" }
+            {
+              type: "instance",
+              componentName: "Input-Default",
+              overrides: { label: "Email", placeholder: "Enter your email" }
+            },
+            {
+              type: "instance",
+              componentName: "Input-Default",
+              overrides: { label: "Password", placeholder: "••••••••" }
+            }
+          ]
+        },
+        {
+          type: "frame",
+          width: "fill",
+          layoutMode: "horizontal",
+          itemSpacing: $spacing-4,
+          children: [
+            {
+              type: "instance",
+              componentName: "Input-Error"
+            },
+            {
+              type: "instance",
+              componentName: "Input-Default",
+              overrides: { 
+                label: "With Helper Text", 
+                placeholder: "Normal input",
+                helperText: "We'll never share your information"
+              }
+            }
           ]
         }
       ]
@@ -615,9 +679,13 @@ Create the main page layout with all component sections:
           content: "Modal",
           fontSize: $font-size-2xl,
           fontWeight: 700,
-          fill: $color-text-primary
+          fill: $color-text-primary,
+          textGrowth: "fixed-width"
         },
-        { type: "instance", componentName: "Modal" }
+        {
+          type: "instance",
+          componentName: "Modal"
+        }
       ]
     },
     
@@ -633,7 +701,8 @@ Create the main page layout with all component sections:
           content: "Empty State",
           fontSize: $font-size-2xl,
           fontWeight: 700,
-          fill: $color-text-primary
+          fill: $color-text-primary,
+          textGrowth: "fixed-width"
         },
         {
           type: "frame",
@@ -643,7 +712,10 @@ Create the main page layout with all component sections:
           stroke: $color-border,
           borderRadius: $radius-m,
           children: [
-            { type: "instance", componentName: "EmptyState" }
+            {
+              type: "instance",
+              componentName: "EmptyState"
+            }
           ]
         }
       ]
@@ -661,7 +733,8 @@ Create the main page layout with all component sections:
           content: "Placeholders",
           fontSize: $font-size-2xl,
           fontWeight: 700,
-          fill: $color-text-primary
+          fill: $color-text-primary,
+          textGrowth: "fixed-width"
         },
         {
           type: "frame",
@@ -678,7 +751,8 @@ Create the main page layout with all component sections:
                   type: "text",
                   content: "Square",
                   fontSize: $font-size-sm,
-                  fill: $color-text-secondary
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
                 },
                 { type: "instance", componentName: "Placeholder-Square" }
               ]
@@ -692,9 +766,48 @@ Create the main page layout with all component sections:
                   type: "text",
                   content: "Video",
                   fontSize: $font-size-sm,
-                  fill: $color-text-secondary
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
                 },
                 { type: "instance", componentName: "Placeholder-Video" }
+              ]
+            }
+          ]
+        },
+        {
+          type: "frame",
+          width: "fill",
+          layoutMode: "horizontal",
+          itemSpacing: $spacing-4,
+          children: [
+            {
+              type: "frame",
+              layoutMode: "vertical",
+              itemSpacing: $spacing-2,
+              children: [
+                {
+                  type: "text",
+                  content: "Portrait",
+                  fontSize: $font-size-sm,
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
+                },
+                { type: "instance", componentName: "Placeholder-Portrait" }
+              ]
+            },
+            {
+              type: "frame",
+              layoutMode: "vertical",
+              itemSpacing: $spacing-2,
+              children: [
+                {
+                  type: "text",
+                  content: "Landscape",
+                  fontSize: $font-size-sm,
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
+                },
+                { type: "instance", componentName: "Placeholder-Landscape" }
               ]
             }
           ]
@@ -714,7 +827,8 @@ Create the main page layout with all component sections:
           content: "Design Tokens",
           fontSize: $font-size-2xl,
           fontWeight: 700,
-          fill: $color-text-primary
+          fill: $color-text-primary,
+          textGrowth: "fixed-width"
         },
         {
           type: "frame",
@@ -722,7 +836,6 @@ Create the main page layout with all component sections:
           layoutMode: "horizontal",
           itemSpacing: $spacing-4,
           children: [
-            // Primary color swatch
             {
               type: "frame",
               width: 150,
@@ -744,11 +857,11 @@ Create the main page layout with all component sections:
                   content: "--color-primary",
                   fontSize: 11,
                   fontFamily: "monospace",
-                  fill: $color-text-secondary
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
                 }
               ]
             },
-            // Secondary color swatch
             {
               type: "frame",
               width: 150,
@@ -770,11 +883,11 @@ Create the main page layout with all component sections:
                   content: "--color-secondary",
                   fontSize: 11,
                   fontFamily: "monospace",
-                  fill: $color-text-secondary
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
                 }
               ]
             },
-            // Success color swatch
             {
               type: "frame",
               width: 150,
@@ -796,11 +909,11 @@ Create the main page layout with all component sections:
                   content: "--color-state-success",
                   fontSize: 11,
                   fontFamily: "monospace",
-                  fill: $color-text-secondary
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
                 }
               ]
             },
-            // Destructive color swatch
             {
               type: "frame",
               width: 150,
@@ -822,7 +935,8 @@ Create the main page layout with all component sections:
                   content: "--color-destructive",
                   fontSize: 11,
                   fontFamily: "monospace",
-                  fill: $color-text-secondary
+                  fill: $color-text-secondary,
+                  textGrowth: "fixed-width"
                 }
               ]
             }
@@ -832,42 +946,26 @@ Create the main page layout with all component sections:
     }
   ]
 }
-\`\`\`
+```
 
----
+## Instructions for Pencil
 
-## Instructions for Generation
-
-1. **Create all reusable components first** - Button variants, Input states, Modal, EmptyState, Placeholders
-2. **Set up variables** - All design tokens with proper categories
-3. **Build the showcase page** - Use the main layout structure with component instances
-4. **Apply visual adjustments** - Use the specified font sizes (17px for buttons, 15px for labels, 44px/50px heights)
-5. **Use variable references** - All colors, spacing, and sizes should reference variables with \`$\` prefix
+1. **Set up variables first** - Create all design tokens as variables
+2. **Create reusable components** - Make Button, Input, Modal, EmptyState, Placeholder components with `reusable: true`
+3. **Build the showcase page** - Use the main layout structure with all sections
+4. **Use variable references** - All colors, spacing, and sizes should reference variables with `$` prefix
+5. **Apply visual adjustments** - Use the specified font sizes (17px for buttons, 15px for labels, etc.)
 6. **Set proper text growth** - Use "auto" for buttons, "fixed-width" for body text
+7. **Add shadows** - Use the defined shadow variables for elevation
 
-## Visual Verification Checklist
+## Visual Verification
 
-After generation, verify:
-- ✅ Button text is crisp at 17px with -0.2 letter-spacing
-- ✅ Button heights feel balanced (44px and 50px)
-- ✅ Input fields have comfortable touch targets (44px)
-- ✅ All spacing matches the $spacing variables exactly
-- ✅ Colors match the CSS variables exactly
-- ✅ Corner radii are smooth and consistent (pill for buttons, 12px for inputs)
-- ✅ Shadows add proper depth (especially on Modal)
-- ✅ Text hierarchy is clear (36px title, 24px section headers, 17px buttons)
+After generation, compare with browser rendering and adjust:
+- Button text should be crisp at 17px with -0.2 letter-spacing
+- Button heights should feel balanced (44px and 50px)
+- Input fields should have comfortable touch targets (44px)
+- All spacing should match the $spacing variables exactly
+- Colors should match the CSS variables exactly
+- Corner radii should be smooth and consistent
 
-## Expected Result
-
-You should see a polished, production-ready design system showcase with:
-- 🎨 **Clean layout** with proper spacing (48px between sections)
-- 🔘 **Professional buttons** with perfect visual balance
-- 📝 **Well-designed inputs** with labels and helper text
-- 🪟 **Beautiful modal** with shadow
-- 📭 **Friendly empty state** with emoji
-- 🖼️ **Placeholder components** with dashed borders
-- 🌈 **Color swatches** showing design tokens
-
-**The file should visually match the browser implementation!**
-`;
-}
+Take screenshots to verify visual accuracy matches the live implementation.
