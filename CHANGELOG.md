@@ -2,6 +2,68 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0] - 2026-01-28 - 🔧 Fixed Pencil Variables (CRITICAL!)
+
+### 🐛 Critical Fix: Pencil Now Uses Variables (Not Hardcoded!)
+
+**Problem Found:** v3.1.0 Pencil generation showed conceptual component structure but didn't include proper Pencil MCP tool syntax. Components ended up with hardcoded colors instead of variable references.
+
+**Root Cause:** Instructions showed "desired structure" but not actual Pencil operations syntax with `I()`, variable references, or proper tool calls.
+
+**Solution:** Complete rewrite using proper Pencil MCP `batch_design` operations.
+
+**What Changed:**
+- ✅ **Step-by-step tool calls:** `open_document` → `set_variables` → `batch_design`
+- ✅ **Variables FIRST:** Explicitly create all design tokens before components
+- ✅ **Proper operations syntax:** Using `I("canvas", {...})` Pencil syntax
+- ✅ **Correct variable references:** All colors use `"$colors.primary"` with quotes
+- ✅ **Test instructions:** Added critical test to verify variables work by changing primary color
+
+**Variable Syntax (FIXED):**
+```javascript
+// CORRECT (what we generate now):
+fill: "$colors.primary"       // Updates when variable changes!
+
+// WRONG (what happened in v3.1.0):
+backgroundColor: $color-primary  // Not proper Pencil syntax
+fill: "#3B82F6"                  // Hardcoded value
+```
+
+**Components Now Use Pencil Operations:**
+```javascript
+btnPrimary=I("canvas", {
+  type: "frame",
+  name: "Button Primary",
+  x: 100,
+  y: 120,
+  width: 180,
+  height: 44,
+  fill: "$colors.primary",      // ← Variable reference!
+  cornerRadius: "$radii.pill",  // ← Variable reference!
+  padding: { left: "$spacing.6", right: "$spacing.6" }  // ← Variables!
+})
+```
+
+**Visual Adjustments Still Applied:**
+- Button text: 17px with -0.2 letter-spacing, font-weight 500
+- Button heights: 44px (default) and 50px (large)
+- Input fields: 44px with 15px labels, 13px helper text
+- All browser-matching specifications maintained
+
+**Verification Added:**
+Instructions now include test: "Change $colors.primary value - all primary buttons should update!"
+
+**Impact:**
+- Variables now work properly in Pencil
+- Design system is truly dynamic
+- Users can change colors and see instant updates
+- No more hardcoded values
+
+**Files Changed:**
+- `lib/generate-pen-file.js` - Rewritten with proper Pencil MCP syntax
+- `package.json` - Version 3.2.0
+- `CHANGELOG.md` - This entry
+
 ## [3.1.0] - 2026-01-28 - 🎨 Professional Pencil Generation
 
 ### ✨ Major Pencil Quality Upgrade
