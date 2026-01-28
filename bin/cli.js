@@ -267,9 +267,9 @@ async function main() {
       const { execa } = await import('execa');
       const open = (await import('open')).default;
       
-      // Run npm run dev in the project directory
+      // Run npm run dev in the app directory (not project root)
       const devServer = execa('npm', ['run', 'dev'], {
-        cwd: projectDir,
+        cwd: appDir,
         stdio: ['inherit', 'pipe', 'inherit']
       });
 

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2026-01-28
+
+### Fixed
+- Dev server now runs from app directory instead of project root
+- Fixed "Missing script: dev" error when starting dev server
+
 ## [2.0.0] - 2026-01-28
 
 ### BREAKING CHANGES
