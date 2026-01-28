@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-01-28 - 🍣 MAKI REBRAND
+
+### 🎨 Major Visual Overhaul
+- **Beautiful CLI experience** with gradient ASCII art banner
+- **Boxed messages** for better organization and readability
+- **Colorful spinners** using nanospinner for loading states
+- **Fun emoji** throughout the interface for delightful UX
+- **Gradient text** for headers and important messages
+
+### 🔄 Complete Rebrand
+- **Package name:** `mvp-starter-cli` → `maki-starter-kit`
+- **CLI command:** `mvp-init` → `maki-init`
+- **Brand identity:** Professional "MAKI" theme throughout
+
+### 📦 New Dependencies
+- `figlet@^1.7.0` - ASCII art text rendering
+- `gradient-string@^2.0.2` - Beautiful gradient text effects
+- `boxen@^7.1.1` - Boxed terminal messages
+- `nanospinner@^1.1.0` - Enhanced loading animations
+
+### ✨ Enhanced User Experience
+- Welcome banner with ASCII art and gradient styling
+- Configuration summary in beautiful boxed format
+- Progress indicators with custom spinners
+- Better error messages with styled error boxes
+- Improved step-by-step instructions with emojis and colors
+- Professional "Pro Tips" section in styled box
+- Celebratory messages when dev server starts
+- Beautiful goodbye message when setup completes
+
+### 🎯 Updated Messaging
+- All console outputs redesigned for better readability
+- Consistent emoji usage throughout
+- Clear visual hierarchy with boxed sections
+- Fun, engaging language while remaining professional
+
+### 🔧 Technical Changes
+- Updated all imports to include new visual libraries
+- Added `showWelcomeBanner()` function with figlet ASCII art
+- Enhanced all spinner messages
+- Improved error handling with boxed error display
+- Better prerequisite checking with visual feedback
+
+### ⚠️ Breaking Changes
+- Command name changed from `mvp-init` to `maki-init`
+- Package name changed from `mvp-starter-cli` to `maki-starter-kit`
+- Users need to use new command name after updating
+
 ## [2.0.3] - 2026-01-28
 
 ### Fixed

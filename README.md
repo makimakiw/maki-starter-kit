@@ -1,53 +1,64 @@
-# MVP Starter CLI
+# 🍣 MAKI-STARTER-KIT
 
-A complete Next.js MVP starter with design system, component library, and optional SpecKit integration for spec-driven development.
+> Beautiful Next.js projects in seconds
 
-## What You Get
+**MAKI-STARTER-KIT** is a delightful CLI that bootstraps complete Next.js projects with a professional design system, production-ready components, Pencil integration, and optional SpecKit workflow.
 
-✅ **Next.js 15** with Tailwind CSS v4  
-✅ **Design System** - 62+ design tokens (colors, spacing, typography)  
-✅ **Component Library** - 5 production-ready components  
-✅ **Pencil Integration** - Visual design system file generation  
-✅ **SpecKit Support** - Optional spec-driven development workflow  
-✅ **TypeScript** - Full type safety  
+## ✨ What You Get
 
-## Quick Start
+🎨 **Next.js 15** with Tailwind CSS v4  
+🎯 **Design System** - 62+ design tokens (colors, spacing, typography, shadows)  
+🧩 **Component Library** - 5 production-ready, beautifully styled components  
+✏️ **Pencil Integration** - Visual design system file generation for Cursor  
+📋 **SpecKit Support** - Optional spec-driven development workflow  
+🔒 **TypeScript** - Full type safety out of the box  
+⚡ **Monorepo Ready** - npm workspaces structure  
+🎭 **Beautiful CLI** - Delightful terminal experience with gradients and animations  
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js 18+**
-- **npm** (comes with Node.js)
-- **Git**
-- **Cursor IDE** (recommended)
-- **Optional:** `uv` (for SpecKit - Python package manager)
+- 💻 **Node.js 18+**
+- 📦 **npm** (comes with Node.js)
+- 🔗 **Git**
+- ✨ **Cursor IDE** (recommended)
+- 🐍 **Optional:** `uv` (for SpecKit - auto-installed if you choose SpecKit)
 
 ### Installation
 
 ```bash
-# Install the CLI globally
-npm install -g .
+# Clone the repository
+git clone https://github.com/makimakiw/maki-starter-kit.git
+cd maki-starter-kit
 
-# Or run directly with npx
-npx . my-project-name
+# Install dependencies
+npm install
+
+# Link globally (optional)
+npm link
 ```
 
 ### Usage
 
 ```bash
 # Run the interactive CLI
-npx mvp-init
+maki-init
 
-# Or if installed globally
-mvp-init
+# Or with npx
+npx maki-init
 ```
 
-The CLI will guide you through:
-1. Project configuration (name, colors, preferences)
-2. Next.js project creation
-3. Design system setup
-4. Pencil integration
-5. Optional SpecKit installation (with automatic `uv` installation)
-6. Complete step-by-step instructions (including Pencil setup)
+**MAKI will guide you through:**
+1. 🎯 Project configuration (names, colors, preferences)
+2. 📦 Next.js monorepo creation with npm workspaces
+3. 🎨 Design system setup with 62+ tokens
+4. 🧩 Component library installation
+5. ✏️ Pencil integration and file generation
+6. 📋 Optional SpecKit installation (with automatic `uv` setup)
+7. ✨ Complete step-by-step instructions
+
+**Everything is interactive, beautiful, and fast!**
 
 ## What Gets Created
 
@@ -74,43 +85,50 @@ my-project/
 └── next.config.ts
 ```
 
-## Features
+## ✨ Features
 
-### Design System
+### 🎨 Professional Design System
 
-- **62+ Design Tokens** organized by category:
-  - Colors (primary, secondary, text, surfaces, states)
-  - Spacing (consistent 4px scale)
-  - Typography (5 font sizes)
-  - Border radius (5 sizes)
-  - Shadows (4 elevation levels)
+**62+ Design Tokens** organized by category:
+- 🌈 **Colors** - Primary, secondary, text, surfaces, states
+- 📏 **Spacing** - Consistent 4px scale (xs to 3xl)
+- 📝 **Typography** - 5 font sizes with proper line heights
+- 🔲 **Border Radius** - 5 sizes (sm to 2xl)
+- ✨ **Shadows** - 4 elevation levels
 
-### Component Library
+All tokens use CSS custom properties and are Tailwind CSS v4 compatible!
 
-5 production-ready components:
-- **Button** - Multiple variants and sizes
-- **Input** - With label, error, and helper text support
-- **Modal** - Accessible dialog component
-- **EmptyState** - For empty data states
-- **Placeholder** - Loading states
+### 🧩 Beautiful Component Library
 
-### Pencil Integration
+**5 production-ready components:**
+- 🔘 **Button** - Multiple variants (primary, secondary, ghost) and sizes
+- 📝 **Input** - With label, error, and helper text support
+- 🪟 **Modal** - Fully accessible dialog component with backdrop
+- 📭 **EmptyState** - For empty data states with customizable messages
+- ⏳ **Placeholder** - Skeleton loading states
 
-**Installation:** Pencil must be installed in Cursor's MCP settings first.
+All components use your design system tokens automatically!
 
-In Cursor:
-1. Open Settings (⌘,)
-2. Search for "MCP"
-3. Enable Pencil MCP server
+### ✏️ Pencil Integration
 
-Then create visual design system files:
+**MAKI generates CREATE-PENCIL-FILE.md automatically!**
+
+After installing Pencil MCP in Cursor:
+1. ⚙️  Open Settings (⌘,)
+2. 🔍 Search for "MCP"
+3. ✅ Enable Pencil MCP server
+4. 🔄 Restart Cursor
+
+Then create your visual design system:
 ```
-@CREATE-PENCIL-FILE.md please create the Pencil file
+@app-name/design-system/CREATE-PENCIL-FILE.md create the Pencil file
 ```
 
-### SpecKit (Optional)
+MAKI will detect if Pencil is installed and show you exactly what to do!
 
-Spec-driven development workflow:
+### 📋 SpecKit (Optional)
+
+**Spec-driven development workflow with auto-constitution!**
 ```
 /speckit.constitution - Create project principles
 /speckit.specify      - Define requirements
@@ -250,41 +268,60 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 - Python 3.11+ (for SpecKit)
 - Cursor IDE (recommended)
 
-## Version
+## 🎉 Version
 
-**Current Version:** 2.0.3
+**Current Version:** 🍣 **3.0.0 - MAKI** 🍣
 
-**What's New in v2.0.3:**
-- ✅ **Always generates CREATE-PENCIL-FILE.md** - Works on clean installs
-- ✅ **Fixed MCP detection** - Works on all machines, no hardcoded paths
-- ✅ **Better messaging** - Shows exact file location and @reference path
+### ✨ What's New in v3.0.0 (MAJOR UPDATE!)
 
-**What's New in v2.0.0 (BREAKING CHANGES):**
-- ✅ **Monorepo structure** - Parent folder with nested Next.js app
-- ✅ **npm workspaces** - Scalable project structure
-- ✅ **Root-level Git** - Repository at project root, not in app
-- ✅ **Shared SpecKit** - `.specify/` folder at root for shared specs
+**🎨 Beautiful CLI Experience:**
+- ✨ **Gradient ASCII art banner** - Welcome to MAKI!
+- 📦 **Boxed messages** - Clean, organized terminal output
+- 🌈 **Colorful spinners** - Beautiful loading animations
+- 🎭 **Fun emoji** - Delightful user experience throughout
 
-**Structure:**
+**🔄 Complete Rebrand:**
+- 🍣 **New name:** MAKI-STARTER-KIT (was mvp-starter-cli)
+- 🚀 **New command:** `maki-init` (was mvp-init)
+- 📦 **New package name:** maki-starter-kit
+- ✨ **Professional polish** - Every message improved
+
+**📦 New Dependencies:**
+- `figlet` - ASCII art banners
+- `gradient-string` - Beautiful gradient text
+- `boxen` - Boxed terminal messages
+- `nanospinner` - Enhanced loading spinners
+
+### 🏗️ Previous Major Features
+
+**v2.0.3:**
+- ✅ Always generates CREATE-PENCIL-FILE.md
+- ✅ Fixed MCP detection (no hardcoded paths)
+- ✅ Shows exact file location and @reference path
+
+**v2.0.0:**
+- ✅ Monorepo structure with npm workspaces
+- ✅ Root-level Git repository
+- ✅ Shared SpecKit at project root
+
+**v1.4.0:**
+- ✅ Auto-constitution for SpecKit
+- ✅ Pencil MCP detection
+- ✅ Professional Pencil file generation
+- ✅ Terminal-based SpecKit commands
+
+**Monorepo Structure:**
 ```
-project-folder/            (git repo)
+your-project/              (git repo)
 ├── .git/
-├── .specify/             (shared SpecKit)
-├── package.json          (workspace config)
-└── app-name/             (Next.js app)
+├── .specify/              (shared SpecKit)
+├── package.json           (workspace config)
+└── your-app/              (Next.js app)
     ├── app/
     ├── design-system/
     │   └── CREATE-PENCIL-FILE.md  ← Always created!
     └── package.json
 ```
-
-**Previous features:**
-- ✅ Auto-constitution (v1.4.0)
-- ✅ Pencil detection (v1.4.0)
-- ✅ Professional Pencil files (v1.4.0)
-- ✅ Terminal-based SpecKit (v1.4.0)
-- ✅ Automatic uv installation (v1.2.0)
-- ✅ Real GitHub SpecKit integration (v1.0.0)
 
 ## License
 
