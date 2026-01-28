@@ -252,21 +252,33 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## Version
 
-**Current Version:** 1.4.0
+**Current Version:** 2.0.0
 
-**What's New in v1.4.0:**
-- ✅ **Auto-constitution** - SpecKit constitution created automatically with your project context
-- ✅ **Pencil detection** - CLI detects if Pencil MCP is installed and adjusts instructions
-- ✅ **Professional Pencil files** - Beautiful, styled components with real design system colors
-- ✅ **Terminal-based SpecKit** - Correct terminal commands instead of chat commands
+**What's New in v2.0.0 (BREAKING CHANGES):**
+- ✅ **Monorepo structure** - Parent folder with nested Next.js app
+- ✅ **npm workspaces** - Scalable project structure
+- ✅ **Root-level Git** - Repository at project root, not in app
+- ✅ **Shared SpecKit** - `.specify/` folder at root for shared specs
+
+**Structure:**
+```
+project-folder/            (git repo)
+├── .git/
+├── .specify/             (shared SpecKit)
+├── package.json          (workspace config)
+└── app-name/             (Next.js app)
+    ├── app/
+    ├── design-system/
+    └── package.json
+```
 
 **Previous features:**
-- ✅ Fixed repository structure (v1.3.0)
+- ✅ Auto-constitution (v1.4.0)
+- ✅ Pencil detection (v1.4.0)
+- ✅ Professional Pencil files (v1.4.0)
+- ✅ Terminal-based SpecKit (v1.4.0)
 - ✅ Automatic uv installation (v1.2.0)
-- ✅ Pencil integration (v1.2.0)
 - ✅ Real GitHub SpecKit integration (v1.0.0)
-- ✅ Step-by-step instructions
-- ✅ Graceful error handling
 
 ## License
 

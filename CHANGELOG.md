@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-01-28
+
+### BREAKING CHANGES
+- **Monorepo structure** - Projects now created with parent folder structure
+  - New directory layout: `project-folder/app-name/`
+  - Git initialized at project root (not in Next.js app)
+  - npm workspaces configured for scalability
+
+### Added
+- Two-step project naming: project name (parent) + app name (nested)
+- Automatic monorepo setup with npm workspaces
+- Root-level `.gitignore` and workspace `package.json`
+- SpecKit installed at project root (shared across potential future apps)
+
+### Changed
+- Git repository now at project root instead of Next.js app
+- SpecKit `.specify/` folder at project root for shared specs
+- Constitution references updated to include app path (e.g., `app/design-system/`)
+- Instructions updated to reflect new directory structure
+- Dev server instructions now include `cd app-name` step
+
+### Fixed
+- Clean separation between project and app concerns
+- Better scalability for adding multiple apps in future
+
 ## [1.4.0] - 2026-01-28
 
 ### Added

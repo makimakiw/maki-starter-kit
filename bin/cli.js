@@ -18,27 +18,33 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Show complete step-by-step instructions
-function showCompleteInstructions(projectDir, projectInfo, usedSpecKit, hasPencil) {
+function showCompleteInstructions(projectDir, appDir, projectInfo, usedSpecKit, hasPencil) {
+  const { projectName, appName } = projectInfo;
+  
   console.log('\n' + '='.repeat(70));
   console.log(chalk.bold.green('📋 STEP-BY-STEP INSTRUCTIONS'));
   console.log('='.repeat(70));
   
   console.log(chalk.bold.white('\n✅ What Was Created:\n'));
-  console.log(chalk.dim('  • Next.js project with Tailwind CSS v4'));
-  console.log(chalk.dim('  • Design system with 62+ tokens in app/globals.css'));
+  console.log(chalk.dim(`  • Monorepo structure: ${projectName}/`));
+  console.log(chalk.dim(`  • Next.js app in ${appName}/ with Tailwind CSS v4`));
+  console.log(chalk.dim(`  • Design system with 62+ tokens in ${appName}/app/globals.css`));
   console.log(chalk.dim('  • 5 components: Button, Input, Modal, EmptyState, Placeholder'));
   console.log(chalk.dim('  • Pencil integration files'));
   console.log(chalk.dim('  • Component extraction metadata'));
+  console.log(chalk.dim('  • Git initialized at project root'));
+  console.log(chalk.dim('  • npm workspaces configured'));
   if (usedSpecKit) {
-    console.log(chalk.dim('  • SpecKit framework (.specify/ folder)'));
+    console.log(chalk.dim('  • SpecKit framework (.specify/ folder at root)'));
     console.log(chalk.dim('  • Project constitution with design system rules'));
   }
   
   console.log(chalk.bold.white('\n📍 Step 1: Navigate to Your Project\n'));
-  console.log(chalk.cyan(`   cd ${projectInfo.projectName}`));
+  console.log(chalk.cyan(`   cd ${projectName}`));
   
   console.log(chalk.bold.white('\n📍 Step 2: Open in Cursor\n'));
   console.log(chalk.cyan('   cursor .'));
+  console.log(chalk.dim('   This opens the monorepo root'));
   
   if (hasPencil) {
     console.log(chalk.bold.white('\n📍 Step 3: Pencil MCP Status\n'));
@@ -46,7 +52,7 @@ function showCompleteInstructions(projectDir, projectInfo, usedSpecKit, hasPenci
     
     console.log(chalk.bold.white('\n📍 Step 4: Create Pencil Design File\n'));
     console.log(chalk.white('   In Cursor Chat, paste this command:'));
-    console.log(chalk.bgBlue.white('\n   @CREATE-PENCIL-FILE.md create the Pencil design file   \n'));
+    console.log(chalk.bgBlue.white(`\n   @${appName}/design-system/CREATE-PENCIL-FILE.md create the Pencil design file   \n`));
     console.log(chalk.dim('   This creates a visual design system with styled components'));
   } else {
     console.log(chalk.bold.white('\n📍 Step 3: Install Pencil MCP\n'));
@@ -60,7 +66,7 @@ function showCompleteInstructions(projectDir, projectInfo, usedSpecKit, hasPenci
     
     console.log(chalk.bold.white('\n📍 Step 4: Create Pencil Design File\n'));
     console.log(chalk.white('   After Pencil is installed, in Cursor Chat paste:'));
-    console.log(chalk.bgBlue.white('\n   @CREATE-PENCIL-FILE.md create the Pencil design file   \n'));
+    console.log(chalk.bgBlue.white(`\n   @${appName}/design-system/CREATE-PENCIL-FILE.md create the Pencil design file   \n`));
     console.log(chalk.dim('   This creates a visual design system with styled components'));
   }
   
@@ -99,17 +105,19 @@ function showCompleteInstructions(projectDir, projectInfo, usedSpecKit, hasPenci
   
   console.log(chalk.bold.white('\n📍 Final Step: Run Dev Server\n'));
   console.log(chalk.white('   When ready to see your app:'));
+  console.log(chalk.cyan(`   cd ${appName}`));
   console.log(chalk.cyan('   npm run dev'));
   console.log(chalk.dim('   Opens at http://localhost:3000\n'));
   
   console.log(chalk.bold.yellow('💡 Pro Tips:\n'));
-  console.log(chalk.dim('   • All design tokens are in app/globals.css'));
-  console.log(chalk.dim('   • Components are in design-system/pencildraw/'));
+  console.log(chalk.dim(`   • All design tokens are in ${appName}/app/globals.css`));
+  console.log(chalk.dim(`   • Components are in ${appName}/design-system/pencildraw/`));
   console.log(chalk.dim('   • Use @filename.md to reference files in Cursor'));
+  console.log(chalk.dim('   • Git is initialized at project root (not in app)'));
   if (usedSpecKit) {
     console.log(chalk.dim('   • SpecKit runs in terminal: specify <command>'));
-    console.log(chalk.dim('   • Constitution is in .specify/memory/constitution.md'));
-    console.log(chalk.dim('   • Specs are saved in specs/ folder'));
+    console.log(chalk.dim('   • Constitution is in .specify/memory/constitution.md (at root)'));
+    console.log(chalk.dim('   • Specs are saved in specs/ folder (at root)'));
   }
   
   console.log('\n' + '='.repeat(70) + '\n');
@@ -132,7 +140,8 @@ async function main() {
     // Display summary
     console.log('\n' + chalk.green.bold('✅ Configuration complete!\n'));
     console.log(chalk.cyan('Project Details:'));
-    console.log(chalk.dim('  • Name:        ') + chalk.white(projectInfo.projectName));
+    console.log(chalk.dim('  • Project:     ') + chalk.white(projectInfo.projectName));
+    console.log(chalk.dim('  • App:         ') + chalk.white(projectInfo.appName));
     console.log(chalk.dim('  • Color:       ') + chalk.white(projectInfo.primaryColor));
     console.log(chalk.dim('  • Dark Mode:   ') + chalk.white(projectInfo.darkMode ? 'Yes' : 'No'));
     
@@ -140,25 +149,25 @@ async function main() {
       console.log(chalk.dim('  • Categories:  ') + chalk.white('Yes'));
     }
 
-    console.log('\n' + chalk.bold.cyan('📦 Creating Next.js Project...\n'));
+    console.log('\n' + chalk.bold.cyan('📦 Creating Monorepo...\n'));
 
-    // Create the Next.js project
-    const projectDir = await createNextJsProject(projectInfo);
+    // Create the monorepo structure with Next.js project
+    const { projectDir, appDir } = await createNextJsProject(projectInfo);
 
     // Verify project was created successfully
-    await verifyProject(projectDir);
+    await verifyProject(appDir);
 
-    // Set up design system
+    // Set up design system (in app directory)
     console.log('\n' + chalk.bold.cyan('🎨 Setting Up Design System...\n'));
-    await setupDesignSystem(projectDir, projectInfo);
+    await setupDesignSystem(appDir, projectInfo);
 
-    // Set up Pencil
+    // Set up Pencil (in app directory)
     console.log('\n' + chalk.bold.cyan('🎨 Setting Up Pencil Integration...\n'));
-    await setupPencil(projectDir, projectInfo);
+    await setupPencil(appDir, projectInfo);
 
-    // Extract components to Pencil
+    // Extract components to Pencil (in app directory)
     console.log('\n' + chalk.bold.cyan('📤 Extracting Components to Pencil...\n'));
-    await extractToPencil(projectDir, projectInfo);
+    await extractToPencil(appDir, projectInfo);
 
     // Check if SpecKit can be installed (requires uv)
     console.log('\n' + chalk.cyan('🔍 Checking for SpecKit compatibility...\n'));
@@ -239,7 +248,7 @@ async function main() {
     const hasPencil = await checkPencilMCP();
 
     // Show complete step-by-step instructions BEFORE offering dev server
-    await showCompleteInstructions(projectDir, projectInfo, usedSpecKit, hasPencil);
+    await showCompleteInstructions(projectDir, appDir, projectInfo, usedSpecKit, hasPencil);
 
     // Ask if they want to start the dev server now
     console.log('\n' + chalk.bold.cyan('Final Step: Development Server\n'));
