@@ -93,47 +93,31 @@ You'll see:
 ```
 Hej! Här är MAKI-STARTER-KIT 🍣
 
-Kör dessa kommandon i ordning (VIKTIGT att följa stegen!):
+Super enkelt - bara 3 kommandon:
 
-# 1. Klona
 git clone https://github.com/makimakiw/maki-starter-kit.git
-
-# 2. Gå in i mappen (glöm inte detta!)
 cd maki-starter-kit
+npm install && npm start
 
-# 3. Installera
-npm install
-
-# 4. Kör MAKI
-maki-init
-
-Nya kommandot är "maki-init" - kolla in det! ✨
+Klart! Den startar direkt! ✨
 ```
 
 **English message (professional):**
 ```
 Hey! Check out MAKI-STARTER-KIT 🍣
 
-Run these commands in order (IMPORTANT - follow all steps!):
+Super simple - just 3 commands:
 
-# 1. Clone the repository
 git clone https://github.com/makimakiw/maki-starter-kit.git
-
-# 2. Navigate into the directory (don't skip this!)
 cd maki-starter-kit
+npm install && npm start
 
-# 3. Install dependencies
-npm install
-
-# 4. Run MAKI
-maki-init
-
-New command is "maki-init" - check it out! ✨
+Done! It launches immediately! ✨
 ```
 
-**Quick one-liner:**
+**One-liner (for power users):**
 ```bash
-git clone https://github.com/makimakiw/maki-starter-kit.git && cd maki-starter-kit && npm install && maki-init
+git clone https://github.com/makimakiw/maki-starter-kit.git && cd maki-starter-kit && npm install && npm start
 ```
 
 ### 3. Optional: Rename GitHub Repo

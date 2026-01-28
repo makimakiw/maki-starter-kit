@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.2] - 2026-01-28 - ⚡ Simplified Usage
+
+### 🚀 Major Simplification
+- **One command to run:** Changed from complex `npm link` + `maki-init` workflow to simple `npm start`
+- **Out-of-the-box usage:** Works immediately after `npm install` - no additional setup required
+- **Clearer instructions:** Reduced installation to just 3 commands total
+
+### 📝 Updated Documentation
+- **README.md:** Simplified installation section, now shows `npm start` as primary method
+- **All guides:** Updated troubleshooting, colleague messages, and examples to use `npm start`
+- **Global command:** Made `npm link` optional for users who want the global `maki-init` command
+
+### 🎯 Why This Matters
+Users were confused by "command not found: maki-init" after installation. Now it just works:
+```bash
+git clone https://github.com/makimakiw/maki-starter-kit.git
+cd maki-starter-kit
+npm install && npm start  # ← Launches immediately!
+```
+
+### 📦 Files Changed
+- `README.md` - Simplified installation and usage sections
+- `MAKI-IMPLEMENTATION-COMPLETE.md` - Updated colleague messages
+- `V3.0.1-INSTALLATION-FIX.md` - Updated examples
+- `CHANGELOG.md` - This entry
+- `package.json` - Version bump to 3.0.2
+
 ## [3.0.1] - 2026-01-28 - 📝 Installation Instructions Update
 
 ### 🔧 Fixed
