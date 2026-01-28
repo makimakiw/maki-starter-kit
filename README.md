@@ -288,7 +288,20 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 ## 🎉 Version
 
-**Current Version:** 🍣 **3.0.0 - MAKI** 🍣
+**Current Version:** 🍣 **3.2.0 - MAKI** 🍣
+
+### 🔧 What's New in v3.2.0 (CRITICAL FIX!)
+
+**Fixed Pencil Variables:**
+- ✅ **Variables work properly** - No more hardcoded colors!
+- ✅ **Proper MCP syntax** - Uses correct Pencil operations format
+- ✅ **Dynamic design system** - Change one variable, update everything
+- ✅ **Test instructions** - Verify variables work by changing primary color
+
+**Problem in v3.1.0:** Components had hardcoded colors instead of variable references.  
+**Solution:** Complete rewrite using proper `set_variables` and `batch_design` tool syntax.
+
+**Now when you change `$colors.primary`, all primary buttons update instantly!** 🎨
 
 ### ✨ What's New in v3.0.0 (MAJOR UPDATE!)
 
