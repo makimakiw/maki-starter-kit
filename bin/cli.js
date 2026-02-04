@@ -2,8 +2,6 @@
 
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import path from 'path';
-import fs from 'fs-extra';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import figlet from 'figlet';
@@ -332,40 +330,6 @@ async function main() {
 
     // Show complete step-by-step instructions BEFORE offering dev server
     await showCompleteInstructions(projectDir, appDir, projectInfo, usedSpecKit, hasPencil);
-
-    // Ask if they want to open in Cursor now
-    console.log('\n');
-    const { openInCursor } = await inquirer.prompt([{
-      type: 'confirm',
-      name: 'openInCursor',
-      message: chalk.bold.cyan('💻 Open project in Cursor now?'),
-      default: true
-    }]);
-
-    if (openInCursor) {
-      try {
-        // Open the project directory
-        const launchSpinner = createSpinner('Opening Cursor...').start();
-        await execa('cursor', [projectDir], { stdio: 'pipe' });
-        launchSpinner.success({ text: chalk.green('✓ Opened in Cursor!') });
-        
-        // If SpecKit was installed, also open the workflow guide
-        if (usedSpecKit) {
-          const workflowPath = path.join(projectDir, 'SPECKIT-WORKFLOW.md');
-          if (await fs.pathExists(workflowPath)) {
-            await execa('cursor', [workflowPath], { stdio: 'pipe' });
-            console.log(chalk.green('✓ Opened SpecKit workflow guide!'));
-          }
-          
-          // Show next steps
-          console.log(chalk.cyan('\n📋 Next: Open terminal in Cursor (⌃`) and run:'));
-          console.log(chalk.white('   specify specify "describe your feature"'));
-        }
-      } catch (error) {
-        console.log(chalk.yellow('\n⚠️  Could not launch Cursor automatically'));
-        console.log(chalk.dim('   You can open it manually: cursor .'));
-      }
-    }
 
     // Ask if they want to start the dev server now
     const startPromptBox = boxen(
