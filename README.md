@@ -149,12 +149,15 @@ MAKI will detect if Pencil is installed and show you exactly what to do!
 ### 📋 SpecKit (Optional)
 
 **Spec-driven development workflow with auto-constitution!**
-```
-/speckit.constitution - Create project principles
-/speckit.specify      - Define requirements
-/speckit.plan         - Technical planning
-/speckit.tasks        - Task breakdown
-/speckit.implement    - Auto-implementation
+
+SpecKit runs in your terminal (not Cursor Chat). Open terminal and run:
+
+```bash
+specify constitution  # Create project principles (auto-created during setup)
+specify specify      # Define requirements
+specify plan         # Technical planning
+specify tasks        # Task breakdown
+specify implement    # Execute implementation
 ```
 
 ## Installing SpecKit
@@ -179,6 +182,11 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 **Important:** After installing `uv`, restart your terminal and run the CLI again to complete SpecKit setup.
+
+**SpecKit Usage:** SpecKit runs in your terminal, not in Cursor Chat. After installation:
+1. Open terminal in Cursor (Control+\`)
+2. Run `specify` commands as shown in the workflow
+3. See SPECKIT-WORKFLOW.md (created in your project) for complete guide
 
 ## Development
 
@@ -228,12 +236,15 @@ mvp-init
 ### With SpecKit
 
 ```bash
-# In Cursor Chat
-/speckit.constitution Create principles for clean code and design system usage
-/speckit.specify Build a user dashboard with profile editing
-/speckit.plan Use the existing design system components
-/speckit.tasks
-/speckit.implement
+# In terminal (not Cursor Chat!)
+# Open terminal: Control+`
+
+specify specify "Build a user dashboard with profile editing"
+specify plan
+specify tasks
+specify implement
+
+# See SPECKIT-WORKFLOW.md in your project for detailed guide
 ```
 
 ### Without SpecKit

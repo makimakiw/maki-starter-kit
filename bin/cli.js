@@ -2,6 +2,8 @@
 
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import path from 'path';
+import fs from 'fs-extra';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import figlet from 'figlet';
@@ -115,31 +117,31 @@ function showCompleteInstructions(projectDir, appDir, projectInfo, usedSpecKit, 
   }
   
   if (usedSpecKit) {
-    console.log(chalk.bold.magenta('\n📋 Step 5: Use SpecKit Workflow\n'));
+    console.log(chalk.bold.magenta('\n📋 Step 5: Use SpecKit Workflow (Terminal Commands)\n'));
     console.log(chalk.white('   🎉 SpecKit is configured with your design system context!\n'));
     console.log(chalk.green('   ✓ Constitution already created with design system rules'));
     console.log(chalk.green('   ✓ Knows about your components and color tokens\n'));
     
-    console.log(chalk.white('   🚀 Run these commands in your terminal:\n'));
+    console.log(chalk.bold.yellow('   ⚠️  IMPORTANT: Run SpecKit in your TERMINAL (not Cursor Chat)\n'));
+    console.log(chalk.white('   📂 See SPECKIT-WORKFLOW.md in project root for complete guide\n'));
     
-    console.log(chalk.bold.cyan('   Step 5a: Define What to Build'));
+    console.log(chalk.white('   🚀 Quick Start - Run in terminal:\n'));
+    
+    console.log(chalk.bold.cyan('   1. Open terminal in Cursor'));
+    console.log(chalk.dim('      Press ⌃` (Control + backtick)\n'));
+    
+    console.log(chalk.bold.cyan('   2. Define what to build'));
     console.log('   ' + chalk.bgCyan.black(' specify specify "Build a user dashboard with profile editing" '));
-    console.log(chalk.dim('   Replace the description with what you want to build\n'));
+    console.log(chalk.dim('      Replace with your feature description\n'));
     
-    console.log(chalk.bold.cyan('   Step 5b: Create Technical Plan'));
-    console.log('   ' + chalk.bgCyan.black(' specify plan '));
-    console.log(chalk.dim('   Creates a detailed implementation plan\n'));
+    console.log(chalk.bold.cyan('   3. Follow the workflow'));
+    console.log('   ' + chalk.bgCyan.black(' specify plan ') + chalk.dim('     → Create technical plan'));
+    console.log('   ' + chalk.bgCyan.black(' specify tasks ') + chalk.dim('    → Generate task list'));
+    console.log('   ' + chalk.bgCyan.black(' specify implement ') + chalk.dim(' → Execute tasks\n'));
     
-    console.log(chalk.yellow('   Step 5c: Generate Tasks'));
-    console.log(chalk.cyan('   specify tasks\n'));
-    console.log(chalk.dim('   Breaks down the plan into actionable tasks\n'));
-    
-    console.log(chalk.yellow('   Step 5d: Implement'));
-    console.log(chalk.cyan('   specify implement\n'));
-    console.log(chalk.dim('   Executes all tasks and builds your feature\n'));
-    
-    console.log(chalk.dim('   💡 View constitution: .specify/memory/constitution.md'));
-    console.log(chalk.dim('   💡 Specs are saved in: specs/ folder\n'));
+    console.log(chalk.dim('   💡 Complete guide: SPECKIT-WORKFLOW.md'));
+    console.log(chalk.dim('   💡 Constitution: .specify/memory/constitution.md'));
+    console.log(chalk.dim('   💡 Specs folder: specs/\n'));
   } else {
     console.log(chalk.bold.white('\n📍 Step 5: Start Building Your MVP\n'));
     console.log(chalk.white('   Use Cursor Chat to ask for features:'));
@@ -330,6 +332,40 @@ async function main() {
 
     // Show complete step-by-step instructions BEFORE offering dev server
     await showCompleteInstructions(projectDir, appDir, projectInfo, usedSpecKit, hasPencil);
+
+    // Ask if they want to open in Cursor now
+    console.log('\n');
+    const { openInCursor } = await inquirer.prompt([{
+      type: 'confirm',
+      name: 'openInCursor',
+      message: chalk.bold.cyan('💻 Open project in Cursor now?'),
+      default: true
+    }]);
+
+    if (openInCursor) {
+      try {
+        // Open the project directory
+        const launchSpinner = createSpinner('Opening Cursor...').start();
+        await execa('cursor', [projectDir], { stdio: 'pipe' });
+        launchSpinner.success({ text: chalk.green('✓ Opened in Cursor!') });
+        
+        // If SpecKit was installed, also open the workflow guide
+        if (usedSpecKit) {
+          const workflowPath = path.join(projectDir, 'SPECKIT-WORKFLOW.md');
+          if (await fs.pathExists(workflowPath)) {
+            await execa('cursor', [workflowPath], { stdio: 'pipe' });
+            console.log(chalk.green('✓ Opened SpecKit workflow guide!'));
+          }
+          
+          // Show next steps
+          console.log(chalk.cyan('\n📋 Next: Open terminal in Cursor (⌃`) and run:'));
+          console.log(chalk.white('   specify specify "describe your feature"'));
+        }
+      } catch (error) {
+        console.log(chalk.yellow('\n⚠️  Could not launch Cursor automatically'));
+        console.log(chalk.dim('   You can open it manually: cursor .'));
+      }
+    }
 
     // Ask if they want to start the dev server now
     const startPromptBox = boxen(
